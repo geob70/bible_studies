@@ -289,7 +289,9 @@ export default function BibleStudyApp() {
           <div className="mt-2 flex gap-3 text-sm text-gray-700">
             <span className="font-semibold">{activeStudy.passage}</span>
             <span>•</span>
-            <span>{new Date(activeStudy.updatedAt || activeStudy.createdAt).toLocaleDateString()}</span>
+            <span suppressHydrationWarning>
+              {new Date(activeStudy.updatedAt || activeStudy.createdAt).toLocaleDateString()}
+            </span>
           </div>
         </div>
 

@@ -13,7 +13,8 @@ import {
   ExternalLink, 
   RefreshCw,
   Globe,
-  Layers
+  Layers,
+  X
 } from 'lucide-react';
 import { BibleChapterData, BibleStudy } from '@/types/bible-study';
 import { BIBLE_BOOKS, BIBLE_TRANSLATIONS, fetchBibleChapter } from '@/lib/bible-data';
@@ -36,6 +37,7 @@ export default function BibleReader({
   const [translation, setTranslation] = useState('web');
   const [copiedVerseIndex, setCopiedVerseIndex] = useState<number | null>(null);
   const [iframeKey, setIframeKey] = useState(0);
+  const [showIframeNotice, setShowIframeNotice] = useState(true);
 
   const currentBookInfo = BIBLE_BOOKS.find((b) => b.name === study.currentBook) || BIBLE_BOOKS[44]; // Romans
 
@@ -296,30 +298,40 @@ export default function BibleReader({
           />
 
           {/* Fallback overlay helper if external website blocks framing */}
-          <div className="absolute bottom-3 left-3 right-3 p-3 rounded-[16px] bg-[#ffffff]/90 backdrop-blur-md border border-[#2525251a] shadow-lg flex items-center justify-between text-xs text-[#252525]">
-            <div>
-              <span className="font-semibold block">Browser Frame Notice:</span>
-              <span className="text-[#6b6b6b]">
-                If the website does not load, its security policy may block embedding.
-              </span>
+          {showIframeNotice && (
+            <div className="absolute bottom-3 left-3 right-3 p-3.5 rounded-[16px] bg-[#ffffff]/95 backdrop-blur-md border border-[#2525251a] shadow-lg flex items-center justify-between gap-3 text-xs text-[#252525] z-10 animate-in fade-in duration-150">
+              <div className="flex-1 min-w-0">
+                <span className="font-semibold block">Browser Frame Notice:</span>
+                <span className="text-[#6b6b6b] block">
+                  If the website does not load, its security policy may block embedding.
+                </span>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={study.bibleUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-pill text-xs py-1 px-3"
+                >
+                  Open Tab
+                </a>
+                <button
+                  onClick={() => onUpdateStudy({ bibleMode: 'builtin' })}
+                  className="btn-pill btn-pill-primary text-xs py-1 px-3"
+                >
+                  Use Built-in Reader
+                </button>
+                <button
+                  onClick={() => setShowIframeNotice(false)}
+                  className="btn-icon-pill w-7 h-7 text-[#6b6b6b] hover:text-[#252525]"
+                  title="Close notice"
+                  aria-label="Close notice"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
-            <div className="flex gap-2">
-              <a
-                href={study.bibleUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-pill text-xs py-1 px-3"
-              >
-                Open Tab
-              </a>
-              <button
-                onClick={() => onUpdateStudy({ bibleMode: 'builtin' })}
-                className="btn-pill btn-pill-primary text-xs py-1 px-3"
-              >
-                Use Built-in Reader
-              </button>
-            </div>
-          </div>
+          )}
         </div>
       )}
     </div>

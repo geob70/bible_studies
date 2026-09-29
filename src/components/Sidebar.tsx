@@ -227,6 +227,7 @@ export default function Sidebar({
                     </span>
                   )}
                   <span
+                    suppressHydrationWarning
                     className={`ml-auto flex items-center gap-1 ${
                       isActive ? 'text-white/60' : 'text-[#a1a1a1]'
                     }`}
