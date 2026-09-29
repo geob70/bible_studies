@@ -1,6 +1,6 @@
-import { BibleStudy } from '@/types/bible-study';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
+import { BibleStudy } from "@/types/bible-study";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 const EXPORT_WIDTH = 720;
 
@@ -40,26 +40,60 @@ const EXPORT_CSS = `
 `;
 
 export async function exportStudyToPdf(study: BibleStudy): Promise<void> {
-  const frame = document.createElement('iframe');
-  frame.title = 'PDF export renderer';
-  frame.setAttribute('aria-hidden', 'true');
+  const frame = document.createElement("iframe");
+  frame.title = "PDF export renderer";
+  frame.setAttribute("aria-hidden", "true");
   frame.tabIndex = -1;
   Object.assign(frame.style, {
-    position: 'fixed', left: '-10000px', top: '0',
-    width: `${EXPORT_WIDTH}px`, height: '1000px', border: '0',
+    position: "fixed",
+    left: "-10000px",
+    top: "0",
+    width: `${EXPORT_WIDTH}px`,
+    height: "1000px",
+    border: "0",
   });
   document.body.appendChild(frame);
 
   try {
     const exportDocument = frame.contentDocument;
-    if (!exportDocument) throw new Error('Could not prepare the PDF document.');
+    if (!exportDocument) throw new Error("Could not prepare the PDF document.");
 
     // Restrict exported HTML to the editor's supported text formatting.
-    const source = new DOMParser().parseFromString(study.contentHtml, 'text/html');
-    const allowed = new Set(['P', 'BR', 'H1', 'H2', 'H3', 'UL', 'OL', 'LI',
-      'BLOCKQUOTE', 'STRONG', 'B', 'EM', 'I', 'U', 'S', 'STRIKE', 'SPAN', 'MARK', 'HR', 'PRE', 'CODE']);
-    for (const element of Array.from(source.body.querySelectorAll('*')).reverse()) {
-      if (['SCRIPT', 'STYLE', 'IFRAME', 'OBJECT', 'EMBED'].includes(element.tagName)) {
+    const source = new DOMParser().parseFromString(
+      study.contentHtml,
+      "text/html",
+    );
+    const allowed = new Set([
+      "P",
+      "BR",
+      "H1",
+      "H2",
+      "H3",
+      "UL",
+      "OL",
+      "LI",
+      "BLOCKQUOTE",
+      "STRONG",
+      "B",
+      "EM",
+      "I",
+      "U",
+      "S",
+      "STRIKE",
+      "SPAN",
+      "MARK",
+      "HR",
+      "PRE",
+      "CODE",
+    ]);
+    for (const element of Array.from(
+      source.body.querySelectorAll("*"),
+    ).reverse()) {
+      if (
+        ["SCRIPT", "STYLE", "IFRAME", "OBJECT", "EMBED"].includes(
+          element.tagName,
+        )
+      ) {
         element.remove();
       } else if (!allowed.has(element.tagName)) {
         element.replaceWith(...Array.from(element.childNodes));
@@ -67,14 +101,21 @@ export async function exportStudyToPdf(study: BibleStudy): Promise<void> {
         const inlineStyle = (element as HTMLElement).style;
         const color = inlineStyle.color;
         const background = inlineStyle.backgroundColor;
-        for (const attr of Array.from(element.attributes)) element.removeAttribute(attr.name);
+        for (const attr of Array.from(element.attributes))
+          element.removeAttribute(attr.name);
         if (color) (element as HTMLElement).style.color = color;
-        if (background) (element as HTMLElement).style.backgroundColor = background;
+        if (background)
+          (element as HTMLElement).style.backgroundColor = background;
       }
     }
 
-    const formattedDate = new Date(study.updatedAt || study.createdAt)
-      .toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    const formattedDate = new Date(
+      study.updatedAt || study.createdAt,
+    ).toLocaleDateString("en-US", {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
     const hasContent = Boolean(source.body.textContent?.trim());
     exportDocument.open();
     exportDocument.write(`<!doctype html><html><head><meta charset="utf-8"><style>${EXPORT_CSS}</style></head>
@@ -82,17 +123,25 @@ export async function exportStudyToPdf(study: BibleStudy): Promise<void> {
         <header class="document-header">
           <div class="eyebrow">BIBLE STUDY NOTES</div>
           <div class="date">${escapeHtml(formattedDate)}</div>
-          <h1 class="document-title">${escapeHtml(study.title || 'Untitled Bible Study')}</h1>
-          ${study.passage ? `<div class="passage">${escapeHtml(study.passage)}</div>` : ''}
-          ${study.tags.length ? `<div class="tags">${study.tags.map(escapeHtml).join(' &nbsp; / &nbsp; ')}</div>` : ''}
+          <h1 class="document-title">${escapeHtml(study.title || "Untitled Bible Study")}</h1>
+          ${study.passage ? `<div class="passage">${escapeHtml(study.passage)}</div>` : ""}
+          ${study.tags.length ? `<div class="tags">${study.tags.map(escapeHtml).join(" &nbsp; / &nbsp; ")}</div>` : ""}
         </header>
         <main class="content">${hasContent ? source.body.innerHTML : '<p class="empty">No study notes have been added yet.</p>'}</main>
-        ${study.stickyNotes.length ? `<section class="reflections"><h2>Thoughts &amp; reflections</h2>
-          ${study.stickyNotes.map((note, index) => `<div class="reflection">
+        ${
+          study.stickyNotes.length
+            ? `<section class="reflections"><h2>Thoughts &amp; reflections</h2>
+          ${study.stickyNotes
+            .map(
+              (note, index) => `<div class="reflection">
             <div class="reflection-label">REFLECTION ${index + 1}</div>
-            <div class="reflection-text">${escapeHtml(note.content || '(Empty reflection)')}</div>
-          </div>`).join('')}
-        </section>` : ''}
+            <div class="reflection-text">${escapeHtml(note.content || "(Empty reflection)")}</div>
+          </div>`,
+            )
+            .join("")}
+        </section>`
+            : ""
+        }
       </body></html>`);
     exportDocument.close();
     await exportDocument.fonts.ready;
@@ -100,20 +149,31 @@ export async function exportStudyToPdf(study: BibleStudy): Promise<void> {
     frame.style.height = `${body.scrollHeight + 20}px`;
 
     const canvas = await html2canvas(body, {
-      scale: 2, backgroundColor: '#ffffff', logging: false,
-      width: EXPORT_WIDTH, height: body.scrollHeight,
-      windowWidth: EXPORT_WIDTH, windowHeight: body.scrollHeight,
-      scrollX: 0, scrollY: 0,
+      scale: 2,
+      backgroundColor: "#ffffff",
+      logging: false,
+      width: EXPORT_WIDTH,
+      height: body.scrollHeight,
+      windowWidth: EXPORT_WIDTH,
+      windowHeight: body.scrollHeight,
+      scrollX: 0,
+      scrollY: 0,
     });
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
     const margin = 18;
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
     const contentWidth = pageWidth - margin * 2;
     const pixelsPerMm = canvas.width / contentWidth;
-    const maxSliceHeight = Math.floor((pageHeight - margin * 2 - 10) * pixelsPerMm);
-    const context = canvas.getContext('2d');
-    if (!context) throw new Error('Could not render the PDF pages.');
+    const maxSliceHeight = Math.floor(
+      (pageHeight - margin * 2 - 10) * pixelsPerMm,
+    );
+    const context = canvas.getContext("2d");
+    if (!context) throw new Error("Could not render the PDF pages.");
 
     let offset = 0;
     while (offset < canvas.height) {
@@ -122,29 +182,56 @@ export async function exportStudyToPdf(study: BibleStudy): Promise<void> {
         // Find whitespace near the page boundary so a line is never sliced
         // merely because it happened to fall on the physical page edge.
         const scanStart = Math.max(offset + 1, end - Math.round(90 * 2));
-        const strip = context.getImageData(0, scanStart, canvas.width, end - scanStart);
+        const strip = context.getImageData(
+          0,
+          scanStart,
+          canvas.width,
+          end - scanStart,
+        );
         for (let row = strip.height - 1; row >= 0; row--) {
           let blank = true;
           for (let x = 0; x < strip.width; x++) {
             const i = (row * strip.width + x) * 4;
-            if (strip.data[i] < 245 || strip.data[i + 1] < 245 || strip.data[i + 2] < 245) {
+            if (
+              strip.data[i] < 245 ||
+              strip.data[i + 1] < 245 ||
+              strip.data[i + 2] < 245
+            ) {
               blank = false;
               break;
             }
           }
-          if (blank) { end = scanStart + row + 1; break; }
+          if (blank) {
+            end = scanStart + row + 1;
+            break;
+          }
         }
       }
-      const slice = document.createElement('canvas');
+      const slice = document.createElement("canvas");
       slice.width = canvas.width;
       slice.height = end - offset;
-      const sliceContext = slice.getContext('2d');
-      if (!sliceContext) throw new Error('Could not compose a PDF page.');
-      sliceContext.drawImage(canvas, 0, offset, canvas.width, slice.height,
-        0, 0, slice.width, slice.height);
+      const sliceContext = slice.getContext("2d");
+      if (!sliceContext) throw new Error("Could not compose a PDF page.");
+      sliceContext.drawImage(
+        canvas,
+        0,
+        offset,
+        canvas.width,
+        slice.height,
+        0,
+        0,
+        slice.width,
+        slice.height,
+      );
       if (offset > 0) pdf.addPage();
-      pdf.addImage(slice.toDataURL('image/png'), 'PNG', margin, margin,
-        contentWidth, slice.height / pixelsPerMm);
+      pdf.addImage(
+        slice.toDataURL("image/png"),
+        "PNG",
+        margin,
+        margin,
+        contentWidth,
+        slice.height / pixelsPerMm,
+      );
       offset = end;
     }
 
@@ -153,14 +240,20 @@ export async function exportStudyToPdf(study: BibleStudy): Promise<void> {
       pdf.setPage(page);
       pdf.setDrawColor(220);
       pdf.line(margin, pageHeight - 17, pageWidth - margin, pageHeight - 17);
-      pdf.setFont('helvetica', 'normal');
+      pdf.setFont("helvetica", "normal");
       pdf.setFontSize(8);
       pdf.setTextColor(120);
-      pdf.text('SELAH / BIBLE STUDY', margin, pageHeight - 11);
-      pdf.text(`${page} / ${pageCount}`, pageWidth - margin, pageHeight - 11, { align: 'right' });
+      pdf.text("HIS PRESENCE / BIBLE STUDY", margin, pageHeight - 11);
+      pdf.text(`${page} / ${pageCount}`, pageWidth - margin, pageHeight - 11, {
+        align: "right",
+      });
     }
-    const safeTitle = (study.title || 'bible-study').toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').substring(0, 50) || 'bible-study';
+    const safeTitle =
+      (study.title || "bible-study")
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")
+        .substring(0, 50) || "bible-study";
     pdf.save(`${safeTitle}.pdf`);
   } finally {
     frame.remove();
@@ -169,7 +262,11 @@ export async function exportStudyToPdf(study: BibleStudy): Promise<void> {
 
 function escapeHtml(text: string): string {
   const map: Record<string, string> = {
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;',
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;",
   };
   return text.replace(/[&<>"']/g, (m) => map[m]);
 }
