@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Scripture Study Workspace',
-  description: 'Minimal monochrome Bible study workspace with rich notes, built-in Bible reader, and colorful sticky notes.',
+  description: 'A quiet, thoughtful Bible study workspace with rich notes, built-in Bible reader, and colorful sticky notes.',
 };
 
 export default function RootLayout({

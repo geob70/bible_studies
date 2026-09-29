@@ -27,12 +27,14 @@ export default function PdfExportModal({
   study,
 }: PdfExportModalProps) {
   const [isExporting, setIsExporting] = useState(false);
+  const [exportError, setExportError] = useState<string | null>(null);
   const [includeStickyNotes, setIncludeStickyNotes] = useState(true);
 
   if (!isOpen) return null;
 
   const handleDownloadPdf = async () => {
     setIsExporting(true);
+    setExportError(null);
     try {
       const studyToExport: BibleStudy = {
         ...study,
@@ -42,26 +44,32 @@ export default function PdfExportModal({
       onClose();
     } catch (err) {
       console.error('PDF export failed', err);
+      setExportError('The PDF could not be generated. Please try again.');
     } finally {
       setIsExporting(false);
     }
   };
 
   const handlePrint = () => {
-    window.print();
+    document.body.dataset.printReflections = String(includeStickyNotes);
+    try {
+      window.print();
+    } finally {
+      delete document.body.dataset.printReflections;
+    }
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 select-none">
-      <div className="bg-[#ffffff] border border-[#0a0a0a1a] rounded-[24px] max-w-lg w-full p-6 shadow-2xl flex flex-col space-y-5 animate-in fade-in zoom-in-95 duration-150">
+    <div className="no-print fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 select-none">
+      <div className="bg-[#ffffff] border border-[#2525251a] rounded-[24px] max-w-lg w-full p-6 shadow-2xl flex flex-col space-y-5 animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-[#0a0a0a14]">
+        <div className="flex items-center justify-between pb-3 border-b border-[#25252514]">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#111111] text-[#ffffff] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-[#171717] text-[#ffffff] flex items-center justify-center">
               <Download className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-[#0a0a0a]">
+              <h2 className="text-base font-bold text-[#252525]">
                 Export Formatted PDF
               </h2>
               <p className="text-xs text-[#6b6b6b]">
@@ -79,30 +87,30 @@ export default function PdfExportModal({
         </div>
 
         {/* Study Summary Card */}
-        <div className="p-4 rounded-[16px] bg-[#f5f5f5] border border-[#0a0a0a14] space-y-2">
+        <div className="p-4 rounded-[16px] bg-[#f5f5f5] border border-[#25252514] space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-[#6b6b6b] uppercase tracking-wider">
               Document Preview
             </span>
-            <span className="text-xs font-medium text-[#111111] px-2 py-0.5 rounded-full bg-white border border-[#0a0a0a14]">
+            <span className="text-xs font-medium text-[#171717] px-2 py-0.5 rounded-full bg-white border border-[#25252514]">
               {study.passage || 'General Study'}
             </span>
           </div>
-          <h3 className="text-sm font-bold text-[#0a0a0a]">
+          <h3 className="text-sm font-bold text-[#252525]">
             {study.title || 'Untitled Bible Study'}
           </h3>
           <p className="text-xs text-[#6b6b6b] line-clamp-2">
-            Includes your formatted study notes and {study.stickyNotes?.length || 0} sticky notes.
+            Includes your formatted study notes{includeStickyNotes ? ` and ${study.stickyNotes?.length || 0} reflections` : ''}.
           </p>
         </div>
 
         {/* Options */}
         <div className="space-y-3 text-xs">
-          <label className="flex items-center justify-between p-3 rounded-[12px] border border-[#0a0a0a14] bg-white cursor-pointer hover:bg-[#f5f5f5] transition-colors">
+          <label className="flex items-center justify-between p-3 rounded-[12px] border border-[#25252514] bg-white cursor-pointer hover:bg-[#f5f5f5] transition-colors">
             <div className="flex items-center gap-2.5">
-              <Layers className="w-4 h-4 text-[#111111]" />
+              <Layers className="w-4 h-4 text-[#171717]" />
               <div>
-                <span className="font-semibold text-[#0a0a0a] block">
+                <span className="font-semibold text-[#252525] block">
                   Include Sticky Notes Section
                 </span>
                 <span className="text-[#6b6b6b]">
@@ -114,13 +122,15 @@ export default function PdfExportModal({
               type="checkbox"
               checked={includeStickyNotes}
               onChange={(e) => setIncludeStickyNotes(e.target.checked)}
-              className="w-4 h-4 accent-[#111111] cursor-pointer"
+              className="w-4 h-4 accent-[#171717] cursor-pointer"
             />
           </label>
         </div>
 
+        {exportError && <p role="alert" className="text-sm text-neutral-700">{exportError}</p>}
+
         {/* Actions */}
-        <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#0a0a0a14]">
+        <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#25252514]">
           <button
             onClick={onClose}
             className="btn-pill text-xs py-2 px-4"

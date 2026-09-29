@@ -99,18 +99,20 @@ export default function BibleReader({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-[#ffffff] border-l border-[#0a0a0a1a] overflow-hidden select-none">
+    <div className="bible-reader flex-1 flex flex-col h-full bg-[#ffffff] border-l border-[#2525251a] overflow-hidden select-none">
+      <div className="pane-label"><span>02 &nbsp; / &nbsp; SCRIPTURE</span><BookOpen size={15} /></div>
       {/* Top Header for Reader Controls */}
-      <div className="px-4 py-2.5 border-b border-[#0a0a0a14] bg-[#f5f5f5] flex items-center justify-between gap-2">
+      <div className="reader-controls px-4 py-2.5 border-b border-[#25252514] bg-[#f5f5f5] flex items-center justify-between gap-2">
         {study.bibleMode === 'builtin' ? (
           <>
             {/* Book Selector */}
             <div className="flex items-center gap-1.5 flex-1 min-w-0">
-              <BookOpen className="w-4 h-4 text-[#0a0a0a] shrink-0" />
+              <BookOpen className="w-4 h-4 text-[#252525] shrink-0" />
               <select
+                aria-label="Bible book"
                 value={study.currentBook}
                 onChange={(e) => handleBookChange(e.target.value)}
-                className="bg-[#ffffff] border border-[#0a0a0a1a] rounded-full px-3 py-1 text-xs font-semibold text-[#0a0a0a] outline-hidden cursor-pointer truncate max-w-[150px]"
+                className="bg-[#ffffff] border border-[#2525251a] rounded-full px-3 py-1 text-xs font-semibold text-[#252525] outline-hidden cursor-pointer truncate max-w-[150px]"
               >
                 <optgroup label="New Testament">
                   {BIBLE_BOOKS.filter((b) => b.testament === 'NT').map((b) => (
@@ -140,9 +142,10 @@ export default function BibleReader({
                 </button>
 
                 <select
+                  aria-label="Chapter"
                   value={study.currentChapter}
                   onChange={(e) => handleChapterChange(parseInt(e.target.value, 10))}
-                  className="bg-[#ffffff] border border-[#0a0a0a1a] rounded-full px-2.5 py-1 text-xs font-semibold text-[#0a0a0a] outline-hidden cursor-pointer"
+                  className="bg-[#ffffff] border border-[#2525251a] rounded-full px-2.5 py-1 text-xs font-semibold text-[#252525] outline-hidden cursor-pointer"
                 >
                   {Array.from({ length: currentBookInfo.chapters }, (_, i) => i + 1).map((ch) => (
                     <option key={ch} value={ch}>
@@ -165,9 +168,10 @@ export default function BibleReader({
             {/* Translation Selector */}
             <div className="flex items-center gap-2 shrink-0">
               <select
+                aria-label="Translation"
                 value={translation}
                 onChange={(e) => setTranslation(e.target.value)}
-                className="bg-[#ffffff] border border-[#0a0a0a1a] rounded-full px-2.5 py-1 text-[11px] font-medium text-[#6b6b6b] outline-hidden cursor-pointer"
+                className="bg-[#ffffff] border border-[#2525251a] rounded-full px-2.5 py-1 text-[11px] font-medium text-[#6b6b6b] outline-hidden cursor-pointer"
               >
                 {BIBLE_TRANSLATIONS.map((t) => (
                   <option key={t.id} value={t.id}>
@@ -181,7 +185,7 @@ export default function BibleReader({
           /* Iframe header controls */
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-2 truncate">
-              <Globe className="w-4 h-4 text-[#0a0a0a]" />
+              <Globe className="w-4 h-4 text-[#252525]" />
               <span className="text-xs font-medium text-[#6b6b6b] truncate max-w-[240px]">
                 {study.bibleUrl}
               </span>
@@ -210,17 +214,17 @@ export default function BibleReader({
 
       {/* Main Content Area */}
       {study.bibleMode === 'builtin' ? (
-        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4">
+        <div className="reader-canvas flex-1 overflow-y-auto px-6 py-6 space-y-4">
           {loading ? (
             <div className="py-20 text-center text-sm text-[#6b6b6b] flex flex-col items-center justify-center gap-2">
-              <div className="w-5 h-5 border-2 border-[#111111] border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#171717] border-t-transparent rounded-full animate-spin" />
               <span>Loading {study.currentBook} {study.currentChapter}...</span>
             </div>
           ) : chapterData && chapterData.verses.length > 0 ? (
             <>
               {/* Reference Header */}
-              <div className="mb-4 pb-2 border-b border-[#0a0a0a14] flex items-baseline justify-between">
-                <h2 className="text-lg font-bold text-[#0a0a0a]">
+              <div className="chapter-heading mb-4 pb-2 border-b border-[#25252514] flex items-baseline justify-between">
+                <h2 className="text-lg font-bold text-[#252525]">
                   {chapterData.reference}
                 </h2>
                 <span className="text-[11px] font-semibold text-[#6b6b6b] uppercase tracking-wider">
@@ -229,13 +233,13 @@ export default function BibleReader({
               </div>
 
               {/* Verses list */}
-              <div className="space-y-3 font-serif">
+              <div className="verses space-y-3 font-serif">
                 {chapterData.verses.map((v) => (
                   <div
                     key={v.verse}
-                    className="group relative p-2.5 -mx-2.5 rounded-[12px] hover:bg-[#f5f5f5] transition-colors leading-relaxed"
+                    className="verse group relative p-2.5 -mx-2.5 rounded-[12px] hover:bg-[#f5f5f5] transition-colors leading-relaxed"
                   >
-                    <div className="text-[15px] text-[#111111] pl-6 relative">
+                    <div className="text-[15px] text-[#171717] pl-6 relative">
                       <span className="absolute left-0 top-0.5 text-[11px] font-sans font-bold text-[#6b6b6b] select-none">
                         {v.verse}
                       </span>
@@ -243,28 +247,28 @@ export default function BibleReader({
                     </div>
 
                     {/* Floating quick action buttons */}
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity absolute right-2 top-2 flex items-center gap-1 bg-[#ffffff] border border-[#0a0a0a1a] rounded-full p-1 shadow-md z-10 font-sans">
+                    <div className="verse-actions opacity-0 group-hover:opacity-100 transition-opacity absolute right-2 top-2 flex items-center gap-1 bg-[#ffffff] border border-[#2525251a] rounded-full p-1 shadow-md z-10 font-sans">
                       <button
                         onClick={() => handleInsertVerseToNotes(v.text, v.verse)}
-                        className="p-1 rounded-full hover:bg-[#f5f5f5] text-[#0a0a0a] transition-colors"
+                        className="p-1 rounded-full hover:bg-[#f5f5f5] text-[#252525] transition-colors"
                         title="Insert into notes editor"
                       >
                         <PlusCircle className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleAddVerseToSticky(v.text, v.verse)}
-                        className="p-1 rounded-full hover:bg-[#f5f5f5] text-amber-600 transition-colors"
+                        className="p-1 rounded-full hover:bg-[#f5f5f5] text-neutral-600 transition-colors"
                         title="Add to sticky note"
                       >
                         <StickyIcon className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => handleCopyVerse(v.text, v.verse)}
-                        className="p-1 rounded-full hover:bg-[#f5f5f5] text-[#0a0a0a] transition-colors"
+                        className="p-1 rounded-full hover:bg-[#f5f5f5] text-[#252525] transition-colors"
                         title="Copy verse"
                       >
                         {copiedVerseIndex === v.verse ? (
-                          <Check className="w-3.5 h-3.5 text-green-600" />
+                          <Check className="w-3.5 h-3.5 text-neutral-600" />
                         ) : (
                           <Copy className="w-3.5 h-3.5" />
                         )}
@@ -282,7 +286,7 @@ export default function BibleReader({
         </div>
       ) : (
         /* External Iframe view */
-        <div className="flex-1 flex flex-col h-full bg-[#f5f5f5] relative">
+        <div className="bible-reader flex-1 flex flex-col h-full bg-[#f5f5f5] relative">
           <iframe
             key={iframeKey}
             src={study.bibleUrl}
@@ -292,7 +296,7 @@ export default function BibleReader({
           />
 
           {/* Fallback overlay helper if external website blocks framing */}
-          <div className="absolute bottom-3 left-3 right-3 p-3 rounded-[16px] bg-[#ffffff]/90 backdrop-blur-md border border-[#0a0a0a1a] shadow-lg flex items-center justify-between text-xs text-[#0a0a0a]">
+          <div className="absolute bottom-3 left-3 right-3 p-3 rounded-[16px] bg-[#ffffff]/90 backdrop-blur-md border border-[#2525251a] shadow-lg flex items-center justify-between text-xs text-[#252525]">
             <div>
               <span className="font-semibold block">Browser Frame Notice:</span>
               <span className="text-[#6b6b6b]">

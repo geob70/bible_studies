@@ -31,51 +31,51 @@ const COLOR_VARIANTS: {
 }[] = [
   {
     id: "yellow",
-    name: "Sunny Yellow",
-    bg: "#FEF9C3",
-    border: "#FDE047",
-    text: "#713F12",
-    dot: "#EAB308",
+    name: "Paper",
+    bg: "#f6f6f6",
+    border: "#dbdbdb",
+    text: "#464646",
+    dot: "#b2b2b2",
   },
   {
     id: "mint",
-    name: "Fresh Mint",
-    bg: "#DCFCE7",
-    border: "#86EFAC",
-    text: "#14532D",
-    dot: "#22C55E",
+    name: "Mist",
+    bg: "#f4f4f4",
+    border: "#d4d4d4",
+    text: "#434343",
+    dot: "#9b9b9b",
   },
   {
     id: "sky",
-    name: "Clean Sky",
-    bg: "#E0F2FE",
-    border: "#7DD3FC",
-    text: "#0C4A6E",
-    dot: "#0EA5E9",
+    name: "Silver",
+    bg: "#efefef",
+    border: "#c4c4c4",
+    text: "#3f3f3f",
+    dot: "#8a8a8a",
   },
   {
     id: "lavender",
-    name: "Lilac Lavender",
-    bg: "#F3E8FF",
-    border: "#D8B4FE",
-    text: "#581C87",
-    dot: "#A855F7",
+    name: "Stone",
+    bg: "#ececec",
+    border: "#c1c1c1",
+    text: "#303030",
+    dot: "#727272",
   },
   {
     id: "peach",
-    name: "Warm Peach",
-    bg: "#FFEDD5",
-    border: "#FED7AA",
-    text: "#7C2D12",
-    dot: "#F97316",
+    name: "Pearl",
+    bg: "#efefef",
+    border: "#dcdcdc",
+    text: "#3c3c3c",
+    dot: "#898989",
   },
   {
     id: "rose",
-    name: "Blush Rose",
-    bg: "#FFE4E6",
-    border: "#FECDD3",
-    text: "#881337",
-    dot: "#EC4899",
+    name: "Cloud",
+    bg: "#eaeaea",
+    border: "#d8d8d8",
+    text: "#2e2e2e",
+    dot: "#717171",
   },
 ];
 
@@ -98,21 +98,21 @@ export default function StickyNotesBar({
   };
 
   return (
-    <section className="w-full bg-[#f5f5f5] border-t border-[#0a0a0a1a] flex flex-col transition-all duration-200 z-20">
+    <section className="reflections w-full bg-[#f5f5f5] border-t border-[#2525251a] flex flex-col transition-all duration-200 z-20">
       {/* Bar Header / Collapse toggle */}
-      <div className="px-4 py-1.5 flex items-center justify-between border-b border-[#0a0a0a0f] text-xs text-[#6b6b6b]">
+      <div className="px-4 py-1.5 flex items-center justify-between border-b border-[#2525250f] text-xs text-[#6b6b6b]">
         <div className="flex items-center gap-2">
-          <span className="font-bold text-[11px] uppercase tracking-wider text-[#111111]">
-            STICKY NOTES & REFLECTIONS
+          <span className="font-bold text-[11px] uppercase tracking-wider text-[#171717]">
+            THOUGHTS TO KEEP
           </span>
-          <span className="px-2 py-0.5 rounded-full bg-[#ffffff] border border-[#0a0a0a14] text-[11px] font-semibold text-[#0a0a0a]">
+          <span className="px-2 py-0.5 rounded-full bg-[#ffffff] border border-[#25252514] text-[11px] font-semibold text-[#252525]">
             {stickyNotes.length}
           </span>
         </div>
 
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="flex items-center gap-1 hover:text-[#0a0a0a] transition-colors cursor-pointer py-0.5 px-2 rounded-full hover:bg-[#ffffff]"
+          className="flex items-center gap-1 hover:text-[#252525] transition-colors cursor-pointer py-0.5 px-2 rounded-full hover:bg-[#ffffff]"
           title={
             isCollapsed
               ? "Expand sticky notes drawer"
@@ -141,16 +141,15 @@ export default function StickyNotesBar({
                 <Plus className="w-5 h-5 text-white" />
               </div>
               <span className="text-xs font-semibold text-white text-center leading-tight">
-                Add sticky note
+                Add a reflection
               </span>
             </button>
           </div>
 
           {/* Sticky Notes Cards Row */}
           {stickyNotes.length === 0 ? (
-            <div className="h-[140px] flex items-center justify-center px-8 border-2 border-dashed border-[#0a0a0a1a] rounded-[24px] text-xs text-[#6b6b6b]">
-              No sticky notes yet. Click &quot;+ Add sticky note&quot; to create
-              one.
+            <div className="h-[140px] flex items-center justify-center px-8 border-2 border-dashed border-[#2525251a] rounded-[24px] text-xs text-[#6b6b6b]">
+              Capture a thought, save a verse, or leave a question for later.
             </div>
           ) : (
             stickyNotes.map((note) => {
@@ -193,7 +192,7 @@ export default function StickyNotesBar({
                       {/* Color Menu Popover */}
                       {activeColorPickerId === note.id && (
                         <div
-                          className="absolute right-0 top-6 bg-[#ffffff] border border-[#0a0a0a1a] rounded-[16px] p-1.5 shadow-lg flex gap-1 z-30"
+                          className="absolute right-0 top-6 bg-[#ffffff] border border-[#2525251a] rounded-[16px] p-1.5 shadow-lg flex gap-1 z-30"
                           onMouseLeave={() => setActiveColorPickerId(null)}
                         >
                           {COLOR_VARIANTS.map((variant) => (

@@ -70,7 +70,7 @@ export default function TopBar({
   };
 
   return (
-    <header className="w-full bg-[#ffffff] border-b border-[#0a0a0a1a] px-4 py-2.5 flex items-center justify-between gap-3 z-30 select-none">
+    <header className="topbar w-full bg-[#ffffff] border-b border-[#2525251a] px-4 py-2.5 flex items-center justify-between gap-3 z-30 select-none">
       {/* Left controls */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <button
@@ -79,15 +79,15 @@ export default function TopBar({
           title={isSidebarOpen ? 'Close sidebar' : 'Open sidebar'}
           aria-label="Toggle sidebar"
         >
-          <PanelLeft className="w-4 h-4 text-[#0a0a0a]" />
+          <PanelLeft className="w-4 h-4 text-[#252525]" />
         </button>
 
         <div className="hidden sm:flex items-center gap-2 pl-1">
-          <span className="text-xs font-bold tracking-wider text-[#111111] uppercase px-2 py-0.5 bg-[#f5f5f5] rounded-full border border-[#0a0a0a14]">
-            STUDY
+          <span className="text-xs font-bold tracking-wider text-[#171717] uppercase px-2 py-0.5 bg-[#f5f5f5] rounded-full border border-[#25252514]">
+            SELAH
           </span>
-          <span className="text-sm font-semibold text-[#0a0a0a] max-w-[140px] md:max-w-[200px] truncate" title={study.title}>
-            {study.title || 'Untitled Study'}
+          <span className="text-sm font-semibold text-[#252525] max-w-[140px] md:max-w-[200px] truncate" title={study.title}>
+            {study.title || 'Your study space'}
           </span>
         </div>
       </div>
@@ -95,13 +95,13 @@ export default function TopBar({
       {/* Center URL / Search Bar - as in wireframe */}
       <form
         onSubmit={handleUrlSubmit}
-        className="flex-1 max-w-2xl mx-auto flex items-center bg-[#f5f5f5] border border-[#0a0a0a1a] rounded-[9999px] px-3.5 py-1.5 focus-within:border-[#0a0a0a] focus-within:bg-[#ffffff] transition-all shadow-xs"
+        className="passage-search flex-1 max-w-2xl mx-auto flex items-center bg-[#f5f5f5] border border-[#2525251a] rounded-[9999px] px-3.5 py-1.5 focus-within:border-[#252525] focus-within:bg-[#ffffff] transition-all shadow-xs"
       >
         <div className="flex items-center gap-1.5 text-[#6b6b6b] mr-2">
           {study.bibleMode === 'iframe' ? (
-            <Globe className="w-4 h-4 text-[#0a0a0a]" />
+            <Globe className="w-4 h-4 text-[#252525]" />
           ) : (
-            <BookOpen className="w-4 h-4 text-[#0a0a0a]" />
+            <BookOpen className="w-4 h-4 text-[#252525]" />
           )}
         </div>
         <input
@@ -109,7 +109,7 @@ export default function TopBar({
           value={urlInput}
           onChange={(e) => setUrlInput(e.target.value)}
           placeholder="Enter Bible URL or passage reference (e.g. John 3:16, Romans 8)"
-          className="w-full bg-transparent text-sm text-[#0a0a0a] placeholder-[#a1a1a1] outline-hidden"
+          className="w-full bg-transparent text-sm text-[#252525] placeholder-[#a1a1a1] outline-hidden"
         />
         
         {/* Toggle Mode Button */}
@@ -119,7 +119,7 @@ export default function TopBar({
             const nextMode = study.bibleMode === 'builtin' ? 'iframe' : 'builtin';
             onUpdateStudy({ bibleMode: nextMode });
           }}
-          className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-[#ffffff] border border-[#0a0a0a14] text-[#6b6b6b] hover:text-[#0a0a0a] hover:border-[#0a0a0a33] transition-colors ml-2 shrink-0 cursor-pointer"
+          className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-[#ffffff] border border-[#25252514] text-[#6b6b6b] hover:text-[#252525] hover:border-[#25252533] transition-colors ml-2 shrink-0 cursor-pointer"
           title="Switch between Built-in Bible reader and External Web App Iframe"
         >
           {study.bibleMode === 'builtin' ? 'Reader' : 'Iframe'}
@@ -127,7 +127,7 @@ export default function TopBar({
 
         <button
           type="submit"
-          className="ml-1 text-[#6b6b6b] hover:text-[#0a0a0a] p-1 cursor-pointer transition-colors"
+          className="ml-1 text-[#6b6b6b] hover:text-[#252525] p-1 cursor-pointer transition-colors"
           title="Search / Load"
         >
           <Search className="w-3.5 h-3.5" />
@@ -140,12 +140,12 @@ export default function TopBar({
         <div className="hidden lg:flex items-center gap-1.5 text-xs text-[#6b6b6b] px-2 py-1">
           {isSaving ? (
             <>
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-neutral-500 animate-pulse" />
               <span>Saving...</span>
             </>
           ) : (
             <>
-              <Check className="w-3 h-3 text-[#16a34a]" />
+              <Check className="w-3 h-3 text-[#7f7f7f]" />
               <span>Saved</span>
             </>
           )}
@@ -165,28 +165,28 @@ export default function TopBar({
 
           {showTemplateDropdown && (
             <div 
-              className="absolute right-0 mt-1.5 w-56 bg-[#ffffff] border border-[#0a0a0a1a] rounded-[16px] shadow-lg py-1.5 z-50 text-xs"
+              className="absolute right-0 mt-1.5 w-56 bg-[#ffffff] border border-[#2525251a] rounded-[16px] shadow-lg py-1.5 z-50 text-xs"
               onClick={() => setShowTemplateDropdown(false)}
             >
               <button
                 onClick={() => onNewStudy('blank')}
-                className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#0a0a0a] font-medium flex items-center gap-2"
+                className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#252525] font-medium flex items-center gap-2"
               >
                 <FileText className="w-3.5 h-3.5 text-[#6b6b6b]" />
                 Blank Study
               </button>
               <button
                 onClick={() => onNewStudy('soap')}
-                className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#0a0a0a] font-medium flex items-center gap-2"
+                className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#252525] font-medium flex items-center gap-2"
               >
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                <Sparkles className="w-3.5 h-3.5 text-neutral-600" />
                 SOAP Method (Scripture, Observation, Application, Prayer)
               </button>
               <button
                 onClick={() => onNewStudy('inductive')}
-                className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#0a0a0a] font-medium flex items-center gap-2"
+                className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#252525] font-medium flex items-center gap-2"
               >
-                <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+                <Sparkles className="w-3.5 h-3.5 text-neutral-600" />
                 Inductive Method (Observe, Interpret, Apply)
               </button>
             </div>

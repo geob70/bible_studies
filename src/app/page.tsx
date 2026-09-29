@@ -187,7 +187,7 @@ export default function BibleStudyApp() {
   }, [isDraggingSplitter]);
 
   return (
-    <div className="flex flex-col h-screen w-screen bg-[#ffffff] text-[#0a0a0a] overflow-hidden select-none font-sans">
+    <div className="study-app flex flex-col h-screen w-screen bg-[#ffffff] text-[#252525] overflow-hidden select-none font-sans">
       {/* Top Navigation Bar */}
       <div className="no-print">
         <TopBar
@@ -202,15 +202,19 @@ export default function BibleStudyApp() {
         />
       </div>
 
+      <div className="workspace-intro no-print">
+        <div><span className="eyebrow">YOUR PERSONAL STUDY SPACE</span><h1>A little time in the Word.</h1></div>
+        <p>Read slowly. Reflect deeply.<br />Let the words take root.</p>
+      </div>
       {/* Main Workspace: Split Pane (Editor Left + Bible Reader Right) */}
       <main
         ref={containerRef}
-        className="flex-1 flex overflow-hidden relative no-print"
+        className="workspace flex-1 flex overflow-hidden relative no-print"
       >
         {/* Left Side: Rich Text Note Editor */}
         <section
           style={{ width: `${splitRatio}%` }}
-          className="h-full flex flex-col min-w-[320px] overflow-hidden bg-[#ffffff]"
+          className="workspace-pane h-full flex flex-col min-w-[320px] overflow-hidden bg-[#ffffff]"
         >
           <Editor
             study={activeStudy}
@@ -222,16 +226,16 @@ export default function BibleStudyApp() {
         {/* Draggable Splitter Handle */}
         <div
           onMouseDown={handleMouseDownSplitter}
-          className="w-2.5 bg-[#f5f5f5] hover:bg-[#eaeaea] active:bg-[#111111]/20 cursor-col-resize flex items-center justify-center border-x border-[#0a0a0a14] transition-colors select-none group z-10"
+          className="pane-splitter w-2.5 bg-[#f5f5f5] hover:bg-[#eaeaea] active:bg-[#171717]/20 cursor-col-resize flex items-center justify-center border-x border-[#25252514] transition-colors select-none group z-10"
           title="Drag to resize Notes and Bible pane"
         >
-          <div className="w-1 h-8 rounded-full bg-[#a1a1a1] group-hover:bg-[#111111] transition-colors" />
+          <div className="w-1 h-8 rounded-full bg-[#a1a1a1] group-hover:bg-[#171717] transition-colors" />
         </div>
 
         {/* Right Side: Built-in Bible Reader or Iframe Web App */}
         <section
           style={{ width: `${100 - splitRatio}%` }}
-          className="h-full flex flex-col min-w-[320px] overflow-hidden bg-[#ffffff]"
+          className="workspace-pane h-full flex flex-col min-w-[320px] overflow-hidden bg-[#ffffff]"
         >
           <BibleReader
             study={activeStudy}
@@ -295,7 +299,7 @@ export default function BibleStudyApp() {
         />
 
         {activeStudy.stickyNotes?.length > 0 && (
-          <div className="mt-10 pt-6 border-t-2 border-gray-200">
+          <div className="print-reflections mt-10 pt-6 border-t-2 border-gray-200">
             <h2 className="text-lg font-bold mb-4 text-black">Study Insights & Sticky Notes</h2>
             <div className="grid grid-cols-2 gap-4">
               {activeStudy.stickyNotes.map((note) => (

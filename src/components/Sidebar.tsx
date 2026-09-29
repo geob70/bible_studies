@@ -88,14 +88,14 @@ export default function Sidebar({
   };
 
   return (
-    <aside className="fixed inset-y-0 left-0 w-80 sm:w-96 bg-[#ffffff] border-r border-[#0a0a0a1a] z-40 flex flex-col shadow-2xl transition-transform duration-200 ease-in-out">
+    <aside className="fixed inset-y-0 left-0 w-80 sm:w-96 bg-[#ffffff] border-r border-[#2525251a] z-40 flex flex-col shadow-2xl transition-transform duration-200 ease-in-out">
       {/* Sidebar Header */}
-      <div className="p-4 border-b border-[#0a0a0a1a] flex items-center justify-between">
+      <div className="p-4 border-b border-[#2525251a] flex items-center justify-between">
         <div>
           <span className="text-xs font-bold tracking-widest text-[#6b6b6b] uppercase">
             STUDY ARCHIVE
           </span>
-          <h2 className="text-base font-semibold text-[#0a0a0a]">
+          <h2 className="text-base font-semibold text-[#252525]">
             My Bible Notes
           </h2>
         </div>
@@ -104,12 +104,12 @@ export default function Sidebar({
           className="btn-icon-pill"
           aria-label="Close sidebar"
         >
-          <X className="w-4 h-4 text-[#0a0a0a]" />
+          <X className="w-4 h-4 text-[#252525]" />
         </button>
       </div>
 
       {/* Action / Search Bar */}
-      <div className="p-4 space-y-3 border-b border-[#0a0a0a14] bg-[#f5f5f5]">
+      <div className="p-4 space-y-3 border-b border-[#25252514] bg-[#f5f5f5]">
         <div className="relative">
           <Search className="w-4 h-4 absolute left-3 top-2.5 text-[#6b6b6b]" />
           <input
@@ -117,7 +117,7 @@ export default function Sidebar({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search notes, passages, tags..."
-            className="w-full bg-[#ffffff] border border-[#0a0a0a1a] rounded-[9999px] pl-9 pr-4 py-1.5 text-xs text-[#0a0a0a] placeholder-[#a1a1a1] focus:border-[#0a0a0a] outline-hidden"
+            className="w-full bg-[#ffffff] border border-[#2525251a] rounded-[9999px] pl-9 pr-4 py-1.5 text-xs text-[#252525] placeholder-[#a1a1a1] focus:border-[#252525] outline-hidden"
           />
         </div>
 
@@ -134,7 +134,7 @@ export default function Sidebar({
             className="btn-pill text-xs py-2 px-3"
             title="Create SOAP Study"
           >
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <Sparkles className="w-3.5 h-3.5 text-neutral-600" />
             <span>SOAP</span>
           </button>
         </div>
@@ -161,12 +161,12 @@ export default function Sidebar({
                 onClick={() => onSelectStudy(study.id)}
                 className={`group relative p-3 rounded-[16px] cursor-pointer transition-all border ${
                   isActive
-                    ? 'bg-[#111111] text-[#ffffff] border-[#111111] shadow-xs'
-                    : 'bg-[#ffffff] text-[#0a0a0a] border-[#0a0a0a14] hover:border-[#0a0a0a33] hover:bg-[#f5f5f5]'
+                    ? 'bg-[#171717] text-[#ffffff] border-[#171717] shadow-xs'
+                    : 'bg-[#ffffff] text-[#252525] border-[#25252514] hover:border-[#25252533] hover:bg-[#f5f5f5]'
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className={`text-sm font-semibold leading-snug line-clamp-1 ${isActive ? 'text-[#ffffff]' : 'text-[#0a0a0a]'}`}>
+                  <h3 className={`text-sm font-semibold leading-snug line-clamp-1 ${isActive ? 'text-[#ffffff]' : 'text-[#252525]'}`}>
                     {study.title || 'Untitled Study'}
                   </h3>
 
@@ -178,7 +178,7 @@ export default function Sidebar({
                         onDuplicateStudy(study);
                       }}
                       className={`p-1 rounded-full hover:bg-black/10 transition-colors ${
-                        isActive ? 'text-white/80 hover:text-white' : 'text-[#6b6b6b] hover:text-[#0a0a0a]'
+                        isActive ? 'text-white/80 hover:text-white' : 'text-[#6b6b6b] hover:text-[#252525]'
                       }`}
                       title="Duplicate this study"
                     >
@@ -210,7 +210,7 @@ export default function Sidebar({
                       className={`px-2 py-0.5 rounded-full font-medium ${
                         isActive
                           ? 'bg-white/20 text-white'
-                          : 'bg-[#f5f5f5] text-[#111111] border border-[#0a0a0a14]'
+                          : 'bg-[#f5f5f5] text-[#171717] border border-[#25252514]'
                       }`}
                     >
                       {study.passage}
@@ -242,7 +242,7 @@ export default function Sidebar({
       </div>
 
       {/* Footer Info & Backup */}
-      <div className="p-3 border-t border-[#0a0a0a1a] bg-[#ffffff] space-y-2">
+      <div className="p-3 border-t border-[#2525251a] bg-[#ffffff] space-y-2">
         {importStatus && (
           <div className="p-2 text-xs font-medium text-center rounded-lg bg-green-50 text-green-700 border border-green-200">
             {importStatus}
