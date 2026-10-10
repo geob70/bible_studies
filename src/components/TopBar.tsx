@@ -11,7 +11,8 @@ import {
   Search, 
   Check, 
   FileText,
-  Sparkles,
+  LayoutTemplate,
+  Bookmark,
   ChevronDown
 } from 'lucide-react';
 import { BibleStudy } from '@/types/bible-study';
@@ -70,7 +71,7 @@ export default function TopBar({
   };
 
   return (
-    <header className="topbar w-full bg-[#ffffff] border-b border-[#2525251a] px-4 py-2.5 flex items-center justify-between gap-3 z-30 select-none">
+    <header className="topbar w-full bg-[#ffffff] border-b border-[#2525251a] max-md:rounded-b-[24px] px-4 py-2.5 flex items-center justify-between gap-3 z-30 select-none">
       {/* Left controls */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <button
@@ -158,7 +159,7 @@ export default function TopBar({
             className="btn-pill hidden md:inline-flex text-xs py-1.5 px-3"
             title="Create study with template"
           >
-            <Sparkles className="w-3.5 h-3.5 text-[#6b6b6b]" />
+            <LayoutTemplate className="w-3.5 h-3.5 text-[#6b6b6b]" />
             <span>Templates</span>
             <ChevronDown className="w-3 h-3 text-[#a1a1a1]" />
           </button>
@@ -179,14 +180,14 @@ export default function TopBar({
                 onClick={() => onNewStudy('soap')}
                 className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#252525] font-medium flex items-center gap-2"
               >
-                <Sparkles className="w-3.5 h-3.5 text-neutral-600" />
+                <Bookmark className="w-3.5 h-3.5 text-neutral-600" />
                 SOAP Method (Scripture, Observation, Application, Prayer)
               </button>
               <button
                 onClick={() => onNewStudy('inductive')}
                 className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#252525] font-medium flex items-center gap-2"
               >
-                <Sparkles className="w-3.5 h-3.5 text-neutral-600" />
+                <BookOpen className="w-3.5 h-3.5 text-neutral-600" />
                 Inductive Method (Observe, Interpret, Apply)
               </button>
             </div>
@@ -206,11 +207,12 @@ export default function TopBar({
         {/* Export PDF Pill */}
         <button
           onClick={onExportPdf}
-          className="btn-pill btn-pill-primary text-xs py-1.5 px-3.5"
+          className="btn-pill btn-pill-primary text-xs py-1.5 px-3.5 whitespace-nowrap shrink-0"
           title="Export notes as a styled PDF"
         >
-          <Download className="w-3.5 h-3.5" />
-          <span>Export PDF</span>
+          <Download className="w-3.5 h-3.5 shrink-0" />
+          <span className="hidden sm:inline">Export PDF</span>
+          <span className="sm:hidden">PDF</span>
         </button>
       </div>
     </header>

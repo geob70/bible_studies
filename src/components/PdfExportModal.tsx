@@ -9,7 +9,6 @@ import {
   Check, 
   FileText, 
   Layers, 
-  Sparkles,
   Loader2
 } from 'lucide-react';
 import { BibleStudy } from '@/types/bible-study';
@@ -61,11 +60,11 @@ export default function PdfExportModal({
 
   return (
     <div className="no-print fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 select-none">
-      <div className="bg-[#ffffff] border border-[#2525251a] rounded-[24px] max-w-lg w-full p-6 shadow-2xl flex flex-col space-y-5 animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-[#ffffff] border border-[#2525251a] rounded-[24px] max-w-lg w-full p-5 sm:p-6 shadow-2xl flex flex-col space-y-4 sm:space-y-5 animate-in fade-in zoom-in-95 duration-150">
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-[#25252514]">
           <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-[#171717] text-[#ffffff] flex items-center justify-center">
+            <div className="w-8 h-8   flex items-center justify-center">
               <Download className="w-4 h-4" />
             </div>
             <div>
@@ -130,39 +129,41 @@ export default function PdfExportModal({
         {exportError && <p role="alert" className="text-sm text-neutral-700">{exportError}</p>}
 
         {/* Actions */}
-        <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#25252514]">
-          <button
-            onClick={onClose}
-            className="btn-pill text-xs py-2 px-4"
-            disabled={isExporting}
-          >
-            Cancel
-          </button>
+        <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 pt-2 border-t border-[#25252514]">
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            <button
+              onClick={onClose}
+              className="btn-pill text-xs py-2 px-3 sm:px-4 flex-1 sm:flex-initial justify-center whitespace-nowrap"
+              disabled={isExporting}
+            >
+              Cancel
+            </button>
 
-          <button
-            onClick={handlePrint}
-            className="btn-pill text-xs py-2 px-4"
-            disabled={isExporting}
-            title="Open browser print dialog for high-res vector PDF"
-          >
-            <Printer className="w-3.5 h-3.5" />
-            Print / Vector
-          </button>
+            <button
+              onClick={handlePrint}
+              className="btn-pill text-xs py-2 px-3 sm:px-4 flex-1 sm:flex-initial justify-center whitespace-nowrap"
+              disabled={isExporting}
+              title="Open browser print dialog for high-res vector PDF"
+            >
+              <Printer className="w-3.5 h-3.5 shrink-0" />
+              <span>Print / Vector</span>
+            </button>
+          </div>
 
           <button
             onClick={handleDownloadPdf}
             disabled={isExporting}
-            className="btn-pill btn-pill-primary text-xs py-2 px-5"
+            className="btn-pill btn-pill-primary text-xs py-2.5 sm:py-2 px-4 sm:px-5 w-full sm:w-auto justify-center whitespace-nowrap"
           >
             {isExporting ? (
               <>
-                <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                Generating...
+                <Loader2 className="w-3.5 h-3.5 animate-spin shrink-0" />
+                <span>Generating...</span>
               </>
             ) : (
               <>
-                <Download className="w-3.5 h-3.5" />
-                Download PDF
+                <Download className="w-3.5 h-3.5 shrink-0" />
+                <span>Download PDF</span>
               </>
             )}
           </button>

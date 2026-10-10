@@ -9,7 +9,7 @@ const EXPORT_WIDTH = 720;
 const EXPORT_CSS = `
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; background: #fff; color: #171717; }
-  body { width: ${EXPORT_WIDTH}px; font: 16px/1.7 Arial, Helvetica, sans-serif; }
+  body { width: ${EXPORT_WIDTH}px; font: 16px/1.7 "Helvetica Neue", Helvetica, Arial, sans-serif; }
   h1, h2, h3, p, ul, ol, blockquote { margin: 0; }
   .document-header { padding: 4px 0 26px; border-bottom: 2px solid #171717; margin-bottom: 28px; }
   .eyebrow { font-size: 11px; line-height: 18px; letter-spacing: 2px; color: #666; }

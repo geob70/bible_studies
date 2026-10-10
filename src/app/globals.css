@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Helvetica Neue", Helvetica, Arial, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-helvetica: "Helvetica Neue", Helvetica, Arial, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
 :root {
   /* Norma Monochrome Theme */
   --coal: #171717;
@@ -49,8 +54,9 @@
   --note-slate-badge: #535353;
 
   /* Typography */
-  --font-suisse: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-features: "cv01", "cv11", "ss01";
+  --font-helvetica: "Helvetica Neue", Helvetica, Arial, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-suisse: var(--font-helvetica);
+  --font-features: normal;
 
   /* Border Radii */
   --radius-md: 6px;
@@ -73,7 +79,7 @@ body {
   height: 100%;
   background-color: var(--paper);
   color: var(--ink);
-  font-family: var(--font-suisse);
+  font-family: var(--font-helvetica);
   font-feature-settings: var(--font-features);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -118,6 +124,7 @@ body {
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .btn-pill:hover {
@@ -283,22 +290,22 @@ body {
 .editor-toolbar button { cursor: pointer; min-height: 28px; min-width: 26px; display: inline-flex; align-items: center; justify-content: center; }
 .editor-canvas { padding: 28px 36px; position: relative; }
 .tiptap-editor-content { font-size: 15px; line-height: 1.9; min-height: 240px; padding-bottom: 40px; user-select: text; }
-.tiptap-editor-content p.is-editor-empty:first-child::before { font-family: Georgia, serif; font-style: italic; font-size: 18px; color: #999999; }
+.tiptap-editor-content p.is-editor-empty:first-child::before { font-family: var(--font-helvetica); font-style: italic; font-size: 17px; color: #999999; }
 .tiptap-editor-content ul { list-style: disc; }
 .tiptap-editor-content ol { list-style: decimal; }
 .writing-prompts { position: absolute; top: 95px; left: 36px; right: 36px; pointer-events: none; border-top: 1px solid #efefef; padding-top: 25px; }
-.writing-prompts p { font-family: Georgia, serif; font-size: 16px; line-height: 2.1; color: #888888; margin-top: 12px; }
+.writing-prompts p { font-family: var(--font-helvetica); font-size: 15px; line-height: 2; color: #888888; margin-top: 12px; }
 .prompt-footnote { display: block; margin-top: 25px; color: #9d9d9d; font-size: 10px; line-height: 1.7; }
 .reader-controls { padding: 16px 24px; background: #f9f9f9; flex-wrap: wrap; }
 .reader-controls select { border-radius: 12px; padding: 7px 9px; background: #ffffff; max-width: 170px; }
 .reader-canvas { padding: 25px 34px 40px; user-select: text; }
 .chapter-heading { display: flex; flex-direction: column-reverse; gap: 10px; border-color: #ebebeb; padding-bottom: 20px; margin-bottom: 22px; }
-.chapter-heading h2 { font-family: Georgia, serif; font-size: 33px; font-weight: 400; letter-spacing: -.04em; color: #2c2c2c; }
+.chapter-heading h2 { font-family: var(--font-helvetica); font-size: 32px; font-weight: 700; letter-spacing: -.035em; color: #2c2c2c; }
 .chapter-heading > span { font-size: 8px; letter-spacing: .18em; color: #8d8d8d; }
-.verses { font-family: Georgia, 'Times New Roman', serif; }
+.verses { font-family: var(--font-helvetica); }
 .verse { padding: 7px 8px; margin-top: 4px; }
-.verse > div:first-child { font-size: 17px; line-height: 1.85; color: #4c4c4c; padding-left: 28px; }
-.verse > div:first-child > span { color: #9f9f9f; font-size: 10px; top: 5px; }
+.verse > div:first-child { font-size: 16px; line-height: 1.85; color: #3b3b3b; padding-left: 28px; }
+.verse > div:first-child > span { color: #8f8f8f; font-size: 11px; top: 4px; }
 .verse:focus-within .verse-actions { opacity: 1; }
 .reflections { background: transparent; border: 0; padding: 16px 30px 20px; }
 .reflections > div:first-child { padding: 0 3px 10px; border: 0; }
@@ -308,7 +315,7 @@ body {
 .reflections > div:nth-child(2) > div > .btn-pill span, .reflections > div:nth-child(2) > div > .btn-pill svg { color: #171717; }
 .reflections > div:nth-child(2) > div > .btn-pill > div { background: #dadada; width: 26px; height: 26px; }
 .reflections > div:nth-child(2) > div { height: 105px; border-radius: 20px; }
-.reflections > div:nth-child(2) > div:nth-child(2):last-child:not(.group) { border: 1px dashed #e1e1e1; font-family: Georgia, serif; font-size: 14px; font-style: italic; color: #929292; padding: 20px 30px; max-width: 430px; }
+.reflections > div:nth-child(2) > div:nth-child(2):last-child:not(.group) { border: 1px dashed #e1e1e1; font-family: var(--font-helvetica); font-size: 14px; font-style: italic; color: #888888; padding: 20px 30px; max-width: 430px; }
 button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid #868686; outline-offset: 3px; }
 @media (max-width: 1100px) {
   .topbar { gap: 12px; padding: 14px 20px; }
@@ -318,25 +325,138 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
   .reader-canvas { padding: 24px; }
   .editor-toolbar { margin: 0 18px; }
 }
-@media (max-width: 700px) {
-  html, body { overflow: auto; }
-  .study-app { height: auto; min-height: 100dvh; overflow: visible; }
-  .topbar { flex-wrap: wrap; }
-  .topbar > div:first-child > div { display: flex; }
-  .passage-search { order: 3; flex-basis: 100%; max-width: none; }
-  .topbar > div:last-child { margin-left: auto; }
-  .topbar .btn-pill { padding: 9px; }
-  .workspace-intro { padding: 24px 20px; }
-  .workspace-intro h1 { font-size: 30px; }
-  .workspace-intro p { display: none; }
-  .workspace { flex-direction: column; margin: 0 12px; overflow: visible; flex: none; }
-  .workspace-pane { width: 100% !important; height: 560px; }
-  .workspace-pane:last-child { border-top: 1px solid #e7e7e7; }
-  .pane-splitter { display: none; }
-  .reflections { padding: 20px 14px; }
-  .reader-controls select { max-width: 145px; }
-  .pane-label { padding: 16px 22px; }
+@media (max-width: 767px) {
+  html, body {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+  }
+  .study-app {
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .topbar {
+    min-height: auto;
+    padding: 10px 14px 12px;
+    gap: 8px;
+    flex-wrap: wrap;
+    border-radius: 0 0 24px 24px;
+    border: 1px solid rgba(10, 10, 10, 0.08);
+    border-top: none;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
+  }
+  .topbar > div:first-child > div {
+    display: flex;
+  }
+  .passage-search {
+    order: 3;
+    flex-basis: 100%;
+    max-width: none;
+    padding: 7px 12px;
+  }
+  .passage-search input {
+    font-size: 13px;
+  }
+  .topbar > div:last-child {
+    margin-left: auto;
+  }
+  .topbar .btn-pill {
+    padding: 7px 12px;
+    font-size: 11px;
+  }
+  .topbar button[title="Create study with template"] {
+    display: none;
+  }
+  .workspace-intro {
+    display: none !important;
+  }
+  .workspace {
+    margin: 10px 10px;
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+    gap: 0;
+  }
+  .workspace-pane {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0;
+    border-radius: 24px;
+    border: 1px solid rgba(10, 10, 10, 0.08);
+  }
+  .workspace-pane-editor,
+  .workspace-pane-bible {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  .pane-splitter {
+    display: none !important;
+  }
+  .mobile-bottom-nav {
+    border-radius: 24px 24px 0 0;
+    border: 1px solid rgba(10, 10, 10, 0.08);
+    border-bottom: none;
+    box-shadow: 0 -4px 14px rgba(0, 0, 0, 0.03);
+  }
+  .pane-label {
+    display: none !important;
+  }
+  .notes-heading {
+    padding: 16px 18px 12px;
+  }
+  .notes-heading input {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    -webkit-appearance: none;
+  }
+  .notes-heading input:focus,
+  .notes-heading input:focus-visible {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .notes-heading > input {
+    font-size: 22px;
+    margin-bottom: 12px;
+  }
+  .editor-toolbar {
+    margin: 0 10px;
+    padding: 6px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .editor-canvas {
+    padding: 16px 18px;
+  }
+  .reader-controls {
+    padding: 10px 14px;
+    gap: 8px;
+  }
+  .reader-canvas {
+    padding: 16px 18px 24px;
+  }
+  .chapter-heading h2 {
+    font-size: 22px;
+  }
+  .verse:focus-within .verse-actions,
+  .verse:active .verse-actions {
+    opacity: 1;
+  }
+  .reflections {
+    padding: 12px 14px;
+  }
 }
+
+.pane-label {
+  display: none !important;
+}
+
 /* Finite entrance animations and restrained interaction feedback. */
 @keyframes surface-arrive {
   from { opacity: 0; transform: translateY(10px); }
@@ -344,9 +464,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
 }
 .workspace-intro { animation: surface-arrive 400ms ease-out both; }
 .workspace-pane { animation: surface-arrive 500ms ease-out both; }
-.workspace-pane:last-child { animation-delay: 80ms; }
 .reflections { animation: surface-arrive 500ms 120ms ease-out both; }
-.reflections .group { animation: surface-arrive 250ms ease-out both; }
 .study-app aside { animation: surface-arrive 220ms ease-out both; }
 .btn-pill, .btn-icon-pill, .editor-toolbar button, .verse {
   transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
@@ -360,11 +478,7 @@ button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px s
 .pane-label { background: #fdfdfd; }
 .passage-search { transition: box-shadow 180ms ease, background-color 180ms ease; }
 .passage-search:focus-within { background: white; box-shadow: 0 0 0 3px #17171718; }
-@media (max-width: 700px) {
-  .workspace { gap: 16px; }
-  .workspace-pane { border-radius: 22px; }
-  .topbar button[title="Create study with template"] { display: none; }
-}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }

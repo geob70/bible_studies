@@ -140,7 +140,6 @@ export default function Editor({
 
   return (
     <div className="notes-editor flex-1 flex flex-col h-full bg-[#ffffff] overflow-hidden">
-      <div className="pane-label"><span>01 &nbsp; / &nbsp; YOUR STUDY</span><span>A space to listen & reflect</span></div>
       {/* Editor Header: Title, Passage & Metadata */}
       <div className="notes-heading px-6 pt-5 pb-3 border-b border-[#25252514] bg-[#ffffff]">
         <input
@@ -149,19 +148,21 @@ export default function Editor({
           onChange={(e) => onUpdateStudy({ title: e.target.value })}
           aria-label="Study title"
           placeholder="Give your study a title…"
-          className="w-full text-2xl font-bold tracking-tight text-[#252525] placeholder-[#a1a1a1] border-none outline-hidden bg-transparent mb-2.5"
+          className="w-full text-2xl font-bold tracking-tight text-[#252525] placeholder-[#a1a1a1] border-none outline-none focus:outline-none focus:ring-0 bg-transparent mb-2.5"
+          style={{ border: 'none', outline: 'none', boxShadow: 'none' }}
         />
 
         <div className="flex flex-wrap items-center gap-2 text-xs">
           {/* Passage reference */}
           <div className="flex items-center gap-1.5 bg-[#f5f5f5] border border-[#2525251a] rounded-full px-3 py-1">
-            <BookMarked className="w-3.5 h-3.5 text-[#171717]" />
+            <BookMarked className="w-3.5 h-3.5 text-[#171717] shrink-0" />
             <input
               type="text"
               value={study.passage}
               onChange={(e) => onUpdateStudy({ passage: e.target.value })}
               placeholder="Passage (e.g. John 1)"
-              className="bg-transparent text-xs font-semibold text-[#171717] placeholder-[#a1a1a1] outline-hidden w-40"
+              className="bg-transparent text-xs font-semibold text-[#171717] placeholder-[#a1a1a1] border-none outline-none focus:outline-none focus:ring-0 w-32 sm:w-40"
+              style={{ border: 'none', outline: 'none', boxShadow: 'none' }}
             />
           </div>
 
@@ -182,14 +183,15 @@ export default function Editor({
           ))}
 
           <div className="flex items-center gap-1 bg-[#ffffff] rounded-full px-2 py-0.5 border border-[#25252514]">
-            <Tag className="w-3 h-3 text-[#a1a1a1]" />
+            <Tag className="w-3 h-3 text-[#a1a1a1] shrink-0" />
             <input
               type="text"
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleAddTag}
               placeholder="Add tag + Enter"
-              className="bg-transparent text-[11px] text-[#252525] placeholder-[#a1a1a1] outline-hidden w-24"
+              className="bg-transparent text-[11px] text-[#252525] placeholder-[#a1a1a1] border-none outline-none focus:outline-none focus:ring-0 w-24"
+              style={{ border: 'none', outline: 'none', boxShadow: 'none' }}
             />
           </div>
 

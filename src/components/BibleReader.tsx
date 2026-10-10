@@ -13,7 +13,8 @@ import {
   ExternalLink, 
   RefreshCw,
   Globe,
-  Layers
+  Layers,
+  ChevronDown
 } from 'lucide-react';
 import { BibleChapterData, BibleStudy } from '@/types/bible-study';
 import { BIBLE_BOOKS, BIBLE_TRANSLATIONS, fetchBibleChapter } from '@/lib/bible-data';
@@ -38,6 +39,7 @@ export default function BibleReader({
   const [iframeKey, setIframeKey] = useState(0);
 
   const currentBookInfo = BIBLE_BOOKS.find((b) => b.name === study.currentBook) || BIBLE_BOOKS[44]; // Romans
+  const currentTranslation = BIBLE_TRANSLATIONS.find((t) => t.id === translation) || BIBLE_TRANSLATIONS[0];
 
   // Load chapter data whenever book, chapter, or translation changes
   useEffect(() => {
@@ -100,64 +102,75 @@ export default function BibleReader({
 
   return (
     <div className="bible-reader flex-1 flex flex-col h-full bg-[#ffffff] border-l border-[#2525251a] overflow-hidden select-none">
-      <div className="pane-label"><span>02 &nbsp; / &nbsp; SCRIPTURE</span><BookOpen size={15} /></div>
       {/* Top Header for Reader Controls */}
-      <div className="reader-controls px-4 py-2.5 border-b border-[#25252514] bg-[#f5f5f5] flex items-center justify-between gap-2">
+      <div className="reader-controls px-3.5 py-2.5 border-b border-[#25252514] bg-[#fafafa] flex items-center justify-between gap-2.5 flex-nowrap">
         {study.bibleMode === 'builtin' ? (
           <>
-            {/* Book Selector */}
-            <div className="flex items-center gap-1.5 flex-1 min-w-0">
-              <BookOpen className="w-4 h-4 text-[#252525] shrink-0" />
-              <select
-                aria-label="Bible book"
-                value={study.currentBook}
-                onChange={(e) => handleBookChange(e.target.value)}
-                className="bg-[#ffffff] border border-[#2525251a] rounded-full px-3 py-1 text-xs font-semibold text-[#252525] outline-hidden cursor-pointer truncate max-w-[150px]"
-              >
-                <optgroup label="New Testament">
-                  {BIBLE_BOOKS.filter((b) => b.testament === 'NT').map((b) => (
-                    <option key={b.name} value={b.name}>
-                      {b.name}
-                    </option>
-                  ))}
-                </optgroup>
-                <optgroup label="Old Testament">
-                  {BIBLE_BOOKS.filter((b) => b.testament === 'OT').map((b) => (
-                    <option key={b.name} value={b.name}>
-                      {b.name}
-                    </option>
-                  ))}
-                </optgroup>
-              </select>
+            {/* Book & Chapter Navigation Group */}
+            <div className="flex items-center gap-2 min-w-0">
+              {/* Book Selector Pill */}
+              <div className="relative inline-flex items-center bg-[#ffffff] border border-[#2525251a] rounded-full pl-2.5 pr-6 py-1 hover:border-[#25252540] transition-colors shadow-2xs shrink-0 cursor-pointer">
+                <BookOpen className="w-3.5 h-3.5 text-[#6b6b6b] mr-1.5 shrink-0" />
+                <span className="text-xs font-semibold text-[#171717] max-w-[85px] sm:max-w-[140px] truncate">
+                  {study.currentBook}
+                </span>
+                <ChevronDown className="w-3 h-3 text-[#8b8b8b] absolute right-2 pointer-events-none" />
+                <select
+                  aria-label="Bible book"
+                  value={study.currentBook}
+                  onChange={(e) => handleBookChange(e.target.value)}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                >
+                  <optgroup label="New Testament">
+                    {BIBLE_BOOKS.filter((b) => b.testament === 'NT').map((b) => (
+                      <option key={b.name} value={b.name}>
+                        {b.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Old Testament">
+                    {BIBLE_BOOKS.filter((b) => b.testament === 'OT').map((b) => (
+                      <option key={b.name} value={b.name}>
+                        {b.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                </select>
+              </div>
 
-              {/* Chapter Navigation */}
-              <div className="flex items-center gap-1">
+              {/* Chapter Stepper Pill */}
+              <div className="inline-flex items-center bg-[#ffffff] border border-[#2525251a] rounded-full shadow-2xs p-0.5 shrink-0">
                 <button
                   onClick={() => handleChapterChange(study.currentChapter - 1)}
                   disabled={study.currentChapter <= 1}
-                  className="btn-icon-pill w-7 h-7 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-7 h-7 flex items-center justify-center rounded-full text-[#6b6b6b] hover:text-[#171717] hover:bg-[#f0f0f0] disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
                   title="Previous Chapter"
                 >
                   <ChevronLeft className="w-3.5 h-3.5" />
                 </button>
 
-                <select
-                  aria-label="Chapter"
-                  value={study.currentChapter}
-                  onChange={(e) => handleChapterChange(parseInt(e.target.value, 10))}
-                  className="bg-[#ffffff] border border-[#2525251a] rounded-full px-2.5 py-1 text-xs font-semibold text-[#252525] outline-hidden cursor-pointer"
-                >
-                  {Array.from({ length: currentBookInfo.chapters }, (_, i) => i + 1).map((ch) => (
-                    <option key={ch} value={ch}>
-                      Ch {ch}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative px-1.5 py-0.5 cursor-pointer">
+                  <span className="text-xs font-bold text-[#171717]">
+                    Ch {study.currentChapter}
+                  </span>
+                  <select
+                    aria-label="Chapter"
+                    value={study.currentChapter}
+                    onChange={(e) => handleChapterChange(parseInt(e.target.value, 10))}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                  >
+                    {Array.from({ length: currentBookInfo.chapters }, (_, i) => i + 1).map((ch) => (
+                      <option key={ch} value={ch}>
+                        Chapter {ch}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
                 <button
                   onClick={() => handleChapterChange(study.currentChapter + 1)}
                   disabled={study.currentChapter >= currentBookInfo.chapters}
-                  className="btn-icon-pill w-7 h-7 disabled:opacity-30 disabled:cursor-not-allowed"
+                  className="w-7 h-7 flex items-center justify-center rounded-full text-[#6b6b6b] hover:text-[#171717] hover:bg-[#f0f0f0] disabled:opacity-25 disabled:cursor-not-allowed transition-colors cursor-pointer"
                   title="Next Chapter"
                 >
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -165,17 +178,26 @@ export default function BibleReader({
               </div>
             </div>
 
-            {/* Translation Selector */}
-            <div className="flex items-center gap-2 shrink-0">
+            {/* Translation Selector Pill */}
+            <div className="relative inline-flex items-center bg-[#ffffff] border border-[#2525251a] rounded-full pl-3 pr-6 py-1 hover:border-[#25252540] transition-colors shadow-2xs shrink-0 cursor-pointer">
+              {/* Short code on mobile (e.g. WEB) */}
+              <span className="text-xs font-bold text-[#171717] uppercase tracking-wide sm:hidden">
+                {translation}
+              </span>
+              {/* Full name on desktop */}
+              <span className="hidden sm:inline text-xs font-medium text-[#464646] truncate max-w-[150px]">
+                {currentTranslation.name}
+              </span>
+              <ChevronDown className="w-3 h-3 text-[#8b8b8b] absolute right-2 pointer-events-none" />
               <select
                 aria-label="Translation"
                 value={translation}
                 onChange={(e) => setTranslation(e.target.value)}
-                className="bg-[#ffffff] border border-[#2525251a] rounded-full px-2.5 py-1 text-[11px] font-medium text-[#6b6b6b] outline-hidden cursor-pointer"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               >
                 {BIBLE_TRANSLATIONS.map((t) => (
                   <option key={t.id} value={t.id}>
-                    {t.name}
+                    {t.name} ({t.id.toUpperCase()})
                   </option>
                 ))}
               </select>
@@ -233,7 +255,7 @@ export default function BibleReader({
               </div>
 
               {/* Verses list */}
-              <div className="verses space-y-3 font-serif">
+              <div className="verses space-y-3">
                 {chapterData.verses.map((v) => (
                   <div
                     key={v.verse}

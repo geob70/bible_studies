@@ -9,7 +9,6 @@ import {
   ChevronDown,
   ChevronUp,
   Palette,
-  Sparkles,
 } from "lucide-react";
 import { StickyColor, StickyNote } from "@/types/bible-study";
 

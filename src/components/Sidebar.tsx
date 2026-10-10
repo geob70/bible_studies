@@ -13,7 +13,7 @@ import {
   Upload, 
   Download,
   Calendar,
-  Sparkles
+  Bookmark
 } from 'lucide-react';
 import { BibleStudy } from '@/types/bible-study';
 import { exportStudiesToJson, importStudiesFromJson } from '@/lib/storage';
@@ -25,7 +25,7 @@ interface SidebarProps {
   activeStudyId: string;
   onSelectStudy: (id: string) => void;
   onNewStudy: (template?: 'blank' | 'soap' | 'inductive') => void;
-  onDeleteStudy: (id: string) => void;
+  onDeleteStudy: (study: BibleStudy) => void;
   onDuplicateStudy: (study: BibleStudy) => void;
   onReloadAllStudies: () => void;
 }
@@ -134,7 +134,7 @@ export default function Sidebar({
             className="btn-pill text-xs py-2 px-3"
             title="Create SOAP Study"
           >
-            <Sparkles className="w-3.5 h-3.5 text-neutral-600" />
+            <Bookmark className="w-3.5 h-3.5 text-neutral-600" />
             <span>SOAP</span>
           </button>
         </div>
@@ -170,34 +170,32 @@ export default function Sidebar({
                     {study.title || 'Untitled Study'}
                   </h3>
 
-                  {/* Actions on hover */}
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 shrink-0">
+                  {/* Actions (always visible on mobile, hover on desktop) */}
+                  <div className="flex items-center gap-1 shrink-0 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         onDuplicateStudy(study);
                       }}
-                      className={`p-1 rounded-full hover:bg-black/10 transition-colors ${
+                      className={`p-1.5 rounded-full hover:bg-black/10 transition-colors cursor-pointer ${
                         isActive ? 'text-white/80 hover:text-white' : 'text-[#6b6b6b] hover:text-[#252525]'
                       }`}
                       title="Duplicate this study"
                     >
-                      <Copy className="w-3 h-3" />
+                      <Copy className="w-3.5 h-3.5" />
                     </button>
                     {studies.length > 1 && (
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (confirm(`Delete "${study.title}"?`)) {
-                            onDeleteStudy(study.id);
-                          }
+                          onDeleteStudy(study);
                         }}
-                        className={`p-1 rounded-full hover:bg-red-500/20 hover:text-red-500 transition-colors ${
+                        className={`p-1.5 rounded-full hover:bg-red-500/20 hover:text-red-500 transition-colors cursor-pointer ${
                           isActive ? 'text-white/80' : 'text-[#6b6b6b]'
                         }`}
                         title="Delete study"
                       >
-                        <Trash2 className="w-3 h-3" />
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     )}
                   </div>
