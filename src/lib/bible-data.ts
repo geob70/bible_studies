@@ -73,11 +73,59 @@ export const BIBLE_BOOKS: BibleBookInfo[] = [
 ];
 
 export const BIBLE_TRANSLATIONS = [
+  { id: 'niv', name: 'New International Version (NIV)' },
   { id: 'web', name: 'World English Bible (WEB)' },
   { id: 'kjv', name: 'King James Version (KJV)' },
   { id: 'bbe', name: 'Bible in Basic English (BBE)' },
   { id: 'oeb-cw', name: 'Open English Bible (OEB)' },
 ];
+
+export const PRELOADED_ROMANS_8_NIV: BibleChapterData = {
+  reference: 'Romans 8',
+  translation_name: 'New International Version (NIV)',
+  translation_id: 'niv',
+  verses: [
+    { book_name: 'Romans', chapter: 8, verse: 1, text: 'Therefore, there is now no condemnation for those who are in Christ Jesus,' },
+    { book_name: 'Romans', chapter: 8, verse: 2, text: 'because through Christ Jesus the law of the Spirit who gives life has set you free from the law of sin and death.' },
+    { book_name: 'Romans', chapter: 8, verse: 3, text: 'For what the law was powerless to do because it was weakened by the flesh, God did by sending his own Son in the likeness of sinful flesh to be a sin offering. And so he condemned sin in the flesh,' },
+    { book_name: 'Romans', chapter: 8, verse: 4, text: 'in order that the righteous requirement of the law might be fully met in us, who do not live according to the flesh but according to the Spirit.' },
+    { book_name: 'Romans', chapter: 8, verse: 5, text: 'Those who live according to the flesh have their minds set on what the flesh desires; but those who live in accordance with the Spirit have their minds set on what the Spirit desires.' },
+    { book_name: 'Romans', chapter: 8, verse: 6, text: 'The mind governed by the flesh is death, but the mind governed by the Spirit is life and peace.' },
+    { book_name: 'Romans', chapter: 8, verse: 7, text: 'The mind governed by the flesh is hostile to God; it does not submit to God\'s law, nor can it do so.' },
+    { book_name: 'Romans', chapter: 8, verse: 8, text: 'Those who are in the realm of the flesh cannot please God.' },
+    { book_name: 'Romans', chapter: 8, verse: 9, text: 'You, however, are not in the realm of the flesh but are in the realm of the Spirit, if indeed the Spirit of God lives in you. And if anyone does not have the Spirit of Christ, they do not belong to Christ.' },
+    { book_name: 'Romans', chapter: 8, verse: 10, text: 'But if Christ is in you, then even though your body is subject to death because of sin, the Spirit gives life because of righteousness.' },
+    { book_name: 'Romans', chapter: 8, verse: 11, text: 'And if the Spirit of him who raised Jesus from the dead is living in you, he who raised Christ from the dead will also give life to your mortal bodies because of his Spirit who lives in you.' },
+    { book_name: 'Romans', chapter: 8, verse: 12, text: 'Therefore, brothers and sisters, we have an obligation—but it is not to the flesh, to live according to it.' },
+    { book_name: 'Romans', chapter: 8, verse: 13, text: 'For if you live according to the flesh, you will die; but if by the Spirit you put to death the misdeeds of the body, you will live.' },
+    { book_name: 'Romans', chapter: 8, verse: 14, text: 'For those who are led by the Spirit of God are the children of God.' },
+    { book_name: 'Romans', chapter: 8, verse: 15, text: 'The Spirit you received does not make you slaves, so that you live in fear again; rather, the Spirit you received brought about your adoption to sonship. And by him we cry, “Abba, Father.”' },
+    { book_name: 'Romans', chapter: 8, verse: 16, text: 'The Spirit himself testifies with our spirit that we are God\'s children.' },
+    { book_name: 'Romans', chapter: 8, verse: 17, text: 'Now if we are children, then we are heirs—heirs of God and co-heirs with Christ, if indeed we share in his sufferings in order that we may also share in his glory.' },
+    { book_name: 'Romans', chapter: 8, verse: 18, text: 'I consider that our present sufferings are not worth comparing with the glory that will be revealed in us.' },
+    { book_name: 'Romans', chapter: 8, verse: 19, text: 'For the creation waits in eager expectation for the children of God to be revealed.' },
+    { book_name: 'Romans', chapter: 8, verse: 20, text: 'For the creation was subjected to frustration, not by its own choice, but by the will of the one who subjected it, in hope' },
+    { book_name: 'Romans', chapter: 8, verse: 21, text: 'that the creation itself will be liberated from its bondage to decay and brought into the freedom and glory of the children of God.' },
+    { book_name: 'Romans', chapter: 8, verse: 22, text: 'We know that the whole creation has been groaning as in the pains of childbirth right up to the present time.' },
+    { book_name: 'Romans', chapter: 8, verse: 23, text: 'Not only so, but we ourselves, who have the firstfruits of the Spirit, groan inwardly as we wait eagerly for our adoption to sonship, the redemption of our bodies.' },
+    { book_name: 'Romans', chapter: 8, verse: 24, text: 'For in this hope we were saved. But hope that is seen is no hope at all. Who hopes for what they already have?' },
+    { book_name: 'Romans', chapter: 8, verse: 25, text: 'But if we hope for what we do not yet have, we wait for it patiently.' },
+    { book_name: 'Romans', chapter: 8, verse: 26, text: 'In the same way, the Spirit helps us in our weakness. We do not know what we ought to pray for, but the Spirit himself intercedes for us through wordless groans.' },
+    { book_name: 'Romans', chapter: 8, verse: 27, text: 'And he who searches our hearts knows the mind of the Spirit, because the Spirit intercedes for God\'s people in accordance with the will of God.' },
+    { book_name: 'Romans', chapter: 8, verse: 28, text: 'And we know that in all things God works for the good of those who love him, who have been called according to his purpose.' },
+    { book_name: 'Romans', chapter: 8, verse: 29, text: 'For those God foreknew he also predestined to be conformed to the image of his Son, that he might be the firstborn among many brothers and sisters.' },
+    { book_name: 'Romans', chapter: 8, verse: 30, text: 'And those he predestined, he also called; those he called, he also justified; those he justified, he also glorified.' },
+    { book_name: 'Romans', chapter: 8, verse: 31, text: 'What, then, shall we say in response to these things? If God is for us, who can be against us?' },
+    { book_name: 'Romans', chapter: 8, verse: 32, text: 'He who did not spare his own Son, but gave him up for us all—how will he not also, along with him, graciously give us all things?' },
+    { book_name: 'Romans', chapter: 8, verse: 33, text: 'Who will bring any charge against those whom God has chosen? It is God who justifies.' },
+    { book_name: 'Romans', chapter: 8, verse: 34, text: 'Who then is the one who condemns? No one. Christ Jesus who died—more than that, who was raised to life—is at the right hand of God and is also interceding for us.' },
+    { book_name: 'Romans', chapter: 8, verse: 35, text: 'Who shall separate us from the love of Christ? Shall trouble or hardship or persecution or famine or nakedness or danger or sword?' },
+    { book_name: 'Romans', chapter: 8, verse: 36, text: 'As it is written: “For your sake we face death all day long; we are considered as sheep to be slaughtered.”' },
+    { book_name: 'Romans', chapter: 8, verse: 37, text: 'No, in all these things we are more than conquerors through him who loved us.' },
+    { book_name: 'Romans', chapter: 8, verse: 38, text: 'For I am convinced that neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers,' },
+    { book_name: 'Romans', chapter: 8, verse: 39, text: 'neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord.' },
+  ],
+};
 
 // Offline instant starter data for Romans 8 (World English Bible)
 export const PRELOADED_ROMANS_8: BibleChapterData = {
@@ -122,17 +170,75 @@ export const PRELOADED_PSALM_23: BibleChapterData = {
 };
 
 const chapterCache = new Map<string, BibleChapterData>();
+const nivBookCache = new Map<string, any>();
+
+async function fetchNivChapter(bookName: string, chapter: number): Promise<BibleChapterData> {
+  const matchedBook = BIBLE_BOOKS.find(
+    (b) => b.name.toLowerCase() === bookName.toLowerCase() || b.abbr.toLowerCase() === bookName.toLowerCase()
+  );
+  const canonicalBook = matchedBook ? matchedBook.name : bookName;
+  const fileName = canonicalBook === 'Song of Solomon' ? 'Song Of Solomon' : canonicalBook;
+  const normalizedKey = fileName.toLowerCase();
+
+  let bookData = nivBookCache.get(normalizedKey);
+
+  if (!bookData) {
+    try {
+      const localUrl = `/bible/niv/${encodeURIComponent(fileName)}.json`;
+      const res = await fetch(localUrl);
+      if (res.ok) {
+        bookData = await res.json();
+        nivBookCache.set(normalizedKey, bookData);
+      }
+    } catch {
+      // Local fetch failed, fallback to GitHub raw
+    }
+  }
+
+  if (!bookData) {
+    try {
+      const rawUrl = `https://raw.githubusercontent.com/aruljohn/Bible-niv/main/${encodeURIComponent(fileName)}.json`;
+      const res = await fetch(rawUrl);
+      if (res.ok) {
+        bookData = await res.json();
+        nivBookCache.set(normalizedKey, bookData);
+      }
+    } catch (e) {
+      console.error('Failed to fetch NIV from GitHub raw', e);
+    }
+  }
+
+  if (bookData && Array.isArray(bookData.chapters)) {
+    const chapterObj = bookData.chapters.find((c: any) => String(c.chapter) === String(chapter));
+    if (chapterObj && Array.isArray(chapterObj.verses)) {
+      return {
+        reference: `${canonicalBook} ${chapter}`,
+        translation_name: 'New International Version (NIV)',
+        translation_id: 'niv',
+        verses: chapterObj.verses.map((v: any) => ({
+          book_name: canonicalBook,
+          chapter,
+          verse: parseInt(v.verse, 10) || 1,
+          text: (v.text || '').replace(/`/g, "'").trim(),
+        })),
+      };
+    }
+  }
+
+  throw new Error(`NIV chapter ${canonicalBook} ${chapter} not found`);
+}
 
 export async function fetchBibleChapter(
   bookName: string,
   chapter: number,
-  translation = 'web'
+  translation = 'niv'
 ): Promise<BibleChapterData> {
   const cacheKey = `${bookName.toLowerCase()}_${chapter}_${translation}`;
 
   // Check preloaded first
-  if (bookName.toLowerCase() === 'romans' && chapter === 8 && translation === 'web') {
-    return PRELOADED_ROMANS_8;
+  if (bookName.toLowerCase() === 'romans' && chapter === 8) {
+    if (translation === 'niv') return PRELOADED_ROMANS_8_NIV;
+    if (translation === 'web') return PRELOADED_ROMANS_8;
   }
   if (bookName.toLowerCase().startsWith('psalm') && chapter === 23 && translation === 'web') {
     return PRELOADED_PSALM_23;
@@ -154,6 +260,22 @@ export async function fetchBibleChapter(
       }
     } catch {
       // Ignore local storage error
+    }
+  }
+
+  // Special handling for NIV
+  if (translation === 'niv') {
+    try {
+      const formatted = await fetchNivChapter(bookName, chapter);
+      chapterCache.set(cacheKey, formatted);
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem(`bible_cache_${cacheKey}`, JSON.stringify(formatted));
+        } catch {}
+      }
+      return formatted;
+    } catch (err) {
+      console.warn('NIV fetch error, falling back to WEB', err);
     }
   }
 

@@ -14,14 +14,14 @@ import {
   Sparkles,
   ChevronDown,
 } from "lucide-react";
-import { BibleStudy } from "@/types/bible-study";
+import { BibleStudy, StudyTemplateType } from "@/types/bible-study";
 
 interface TopBarProps {
   study: BibleStudy;
   isSidebarOpen: boolean;
   onToggleSidebar: () => void;
   onUpdateStudy: (updates: Partial<BibleStudy>) => void;
-  onNewStudy: (template?: "blank" | "soap" | "inductive") => void;
+  onNewStudy: (template?: StudyTemplateType) => void;
   onExportPdf: () => void;
   onSearchScripture: (query: string) => void;
   isSaving: boolean;
@@ -43,6 +43,42 @@ export default function TopBar({
       : `${study.currentBook} ${study.currentChapter}`,
   );
   const [showTemplateDropdown, setShowTemplateDropdown] = useState(false);
+  const [isReaderModeOpen, setIsReaderModeOpen] = useState(false);
+
+  const readerModeRef = React.useRef<HTMLDivElement>(null);
+  const templateDropdownRef = React.useRef<HTMLDivElement>(null);
+
+  // Close dropdowns on outside click or Escape
+  React.useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (
+        readerModeRef.current &&
+        !readerModeRef.current.contains(e.target as Node)
+      ) {
+        setIsReaderModeOpen(false);
+      }
+      if (
+        templateDropdownRef.current &&
+        !templateDropdownRef.current.contains(e.target as Node)
+      ) {
+        setShowTemplateDropdown(false);
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsReaderModeOpen(false);
+        setShowTemplateDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   // Sync urlInput when study changes
   React.useEffect(() => {
@@ -102,48 +138,107 @@ export default function TopBar({
         </div>
       </div>
 
-      {/* Center URL / Search Bar - as in wireframe */}
-      <form
-        onSubmit={handleUrlSubmit}
-        className="passage-search flex-1 max-w-2xl mx-auto flex items-center bg-[#f5f5f5] border border-[#2525251a] rounded-[9999px] px-3.5 py-1.5 focus-within:border-[#252525] focus-within:bg-[#ffffff] transition-all shadow-xs"
-      >
-        <div className="flex items-center gap-1.5 text-[#6b6b6b] mr-2">
-          {study.bibleMode === "iframe" ? (
-            <Globe className="w-4 h-4 text-[#252525]" />
-          ) : (
-            <BookOpen className="w-4 h-4 text-[#252525]" />
+      {/* Center: Reader Mode Dropdown + URL / Passage Search Bar */}
+      <div className="flex-1 max-w-2xl mx-auto flex items-center gap-2">
+        {/* Reader Mode Dropdown (web reader / custom reader) */}
+        <div className="relative shrink-0" ref={readerModeRef}>
+          <button
+            type="button"
+            onClick={() => setIsReaderModeOpen((prev) => !prev)}
+            className="h-[34px] px-3 rounded-[10px] md:rounded-full bg-[#ffffff] border border-[#2525251a] hover:border-[#25252533] hover:bg-[#f9f9f9] text-xs font-medium text-[#252525] flex items-center gap-1.5 transition-all shadow-xs cursor-pointer select-none"
+            aria-haspopup="true"
+            aria-expanded={isReaderModeOpen}
+            title="Switch reader mode"
+          >
+            <span>
+              {study.bibleMode === "iframe" ? "web reader" : "custom reader"}
+            </span>
+            <ChevronDown
+              className={`w-3.5 h-3.5 text-[#6b6b6b] transition-transform duration-150 ${
+                isReaderModeOpen ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          {isReaderModeOpen && (
+            <div className="absolute left-0 mt-1.5 w-40 bg-[#ffffff] border border-[#2525251a] rounded-[14px] shadow-lg py-1 z-50 text-xs animate-in fade-in zoom-in-95 duration-100">
+              <button
+                type="button"
+                onClick={() => {
+                  onUpdateStudy({
+                    bibleMode: "iframe",
+                    bibleUrl: study.bibleUrl || "https://www.bible.com/bible",
+                  });
+                  setIsReaderModeOpen(false);
+                }}
+                className={`w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] transition-colors flex items-center justify-between cursor-pointer ${
+                  study.bibleMode === "iframe"
+                    ? "font-semibold text-[#171717]"
+                    : "text-[#6b6b6b]"
+                }`}
+              >
+                <span>web reader</span>
+                {study.bibleMode === "iframe" && (
+                  <Check className="w-3.5 h-3.5 text-[#171717]" />
+                )}
+              </button>
+
+              <div className="my-1 border-t border-[#25252514]" />
+
+              <button
+                type="button"
+                onClick={() => {
+                  onUpdateStudy({ bibleMode: "builtin" });
+                  setIsReaderModeOpen(false);
+                }}
+                className={`w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] transition-colors flex items-center justify-between cursor-pointer ${
+                  study.bibleMode === "builtin"
+                    ? "font-semibold text-[#171717]"
+                    : "text-[#6b6b6b]"
+                }`}
+              >
+                <span>custom reader</span>
+                {study.bibleMode === "builtin" && (
+                  <Check className="w-3.5 h-3.5 text-[#171717]" />
+                )}
+              </button>
+            </div>
           )}
         </div>
-        <input
-          type="text"
-          value={urlInput}
-          onChange={(e) => setUrlInput(e.target.value)}
-          placeholder="Enter Bible URL or passage reference (e.g. John 3:16, Romans 8)"
-          className="w-full bg-transparent text-sm text-[#252525] placeholder-[#a1a1a1] outline-hidden"
-        />
 
-        {/* Toggle Mode Button */}
-        <button
-          type="button"
-          onClick={() => {
-            const nextMode =
-              study.bibleMode === "builtin" ? "iframe" : "builtin";
-            onUpdateStudy({ bibleMode: nextMode });
-          }}
-          className="text-xs font-medium px-2.5 py-0.5 rounded-full bg-[#ffffff] border border-[#25252514] text-[#6b6b6b] hover:text-[#252525] hover:border-[#25252533] transition-colors ml-2 shrink-0 cursor-pointer"
-          title="Switch between Built-in Bible reader and External Web App Iframe"
+        {/* Search Input Bar */}
+        <form
+          onSubmit={handleUrlSubmit}
+          className="passage-search flex-1 flex items-center bg-[#f5f5f5] border border-[#2525251a] rounded-[9999px] px-3.5 py-1.5 focus-within:border-[#252525] focus-within:bg-[#ffffff] transition-all shadow-xs"
         >
-          {study.bibleMode === "builtin" ? "Reader" : "Iframe"}
-        </button>
+          <div className="flex items-center gap-1.5 text-[#6b6b6b] mr-2">
+            {study.bibleMode === "iframe" ? (
+              <Globe className="w-4 h-4 text-[#252525]" />
+            ) : (
+              <BookOpen className="w-4 h-4 text-[#252525]" />
+            )}
+          </div>
+          <input
+            type="text"
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            placeholder={
+              study.bibleMode === "iframe"
+                ? "http/........."
+                : "Search passage (e.g. John 3:16, Romans 8)"
+            }
+            className="w-full bg-transparent text-sm text-[#252525] placeholder-[#a1a1a1] outline-hidden"
+          />
 
-        <button
-          type="submit"
-          className="ml-1 text-[#6b6b6b] hover:text-[#252525] p-1 cursor-pointer transition-colors"
-          title="Search / Load"
-        >
-          <Search className="w-3.5 h-3.5" />
-        </button>
-      </form>
+          <button
+            type="submit"
+            className="ml-1 text-[#6b6b6b] hover:text-[#252525] p-1 cursor-pointer transition-colors"
+            title="Search / Load"
+          >
+            <Search className="w-3.5 h-3.5" />
+          </button>
+        </form>
+      </div>
 
       {/* Right Action buttons */}
       <div className="flex items-center gap-2 flex-shrink-0">
@@ -163,7 +258,7 @@ export default function TopBar({
         </div>
 
         {/* Template Selector Dropdown */}
-        <div className="relative">
+        <div className="relative" ref={templateDropdownRef}>
           <button
             onClick={() => setShowTemplateDropdown(!showTemplateDropdown)}
             className="btn-pill hidden md:inline-flex text-xs py-1.5 px-3"
@@ -176,7 +271,7 @@ export default function TopBar({
 
           {showTemplateDropdown && (
             <div
-              className="absolute right-0 mt-1.5 w-56 bg-[#ffffff] border border-[#2525251a] rounded-[16px] shadow-lg py-1.5 z-50 text-xs"
+              className="absolute right-0 mt-1.5 w-64 bg-[#ffffff] border border-[#2525251a] rounded-[16px] shadow-lg py-1.5 z-50 text-xs"
               onClick={() => setShowTemplateDropdown(false)}
             >
               <button
@@ -187,11 +282,25 @@ export default function TopBar({
                 Blank Study
               </button>
               <button
+                onClick={() => onNewStudy("contrast")}
+                className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#252525] font-medium flex items-center gap-2"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-neutral-800" />
+                Kingdom Contrast (Truth vs. Counterfeit)
+              </button>
+              <button
+                onClick={() => onNewStudy("character")}
+                className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#252525] font-medium flex items-center gap-2"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-neutral-800" />
+                Character Deep-Dive (Walk in Their Shoes)
+              </button>
+              <button
                 onClick={() => onNewStudy("soap")}
                 className="w-full text-left px-3.5 py-2 hover:bg-[#f5f5f5] text-[#252525] font-medium flex items-center gap-2"
               >
                 <Sparkles className="w-3.5 h-3.5 text-neutral-600" />
-                SOAP Method (Scripture, Observation, Application, Prayer)
+                SOAP Method (Scripture, Observe, Apply, Pray)
               </button>
               <button
                 onClick={() => onNewStudy("inductive")}

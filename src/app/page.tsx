@@ -1,24 +1,28 @@
-'use strict';
-'use client';
+"use strict";
+"use client";
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { BibleStudy, StickyColor } from '@/types/bible-study';
-import { 
-  loadAllStudies, 
-  loadActiveStudyId, 
-  saveStudy, 
-  saveActiveStudyId, 
-  deleteStudy as removeStudyFromStorage, 
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import {
+  BibleStudy,
+  StickyColor,
+  StudyTemplateType,
+} from "@/types/bible-study";
+import {
+  loadAllStudies,
+  loadActiveStudyId,
+  saveStudy,
+  saveActiveStudyId,
+  deleteStudy as removeStudyFromStorage,
   createNewStudy,
-  INITIAL_STUDY
-} from '@/lib/storage';
-import { parseScriptureReference } from '@/lib/bible-data';
-import TopBar from '@/components/TopBar';
-import Sidebar from '@/components/Sidebar';
-import Editor from '@/components/Editor';
-import BibleReader from '@/components/BibleReader';
-import StickyNotesBar from '@/components/StickyNotesBar';
-import PdfExportModal from '@/components/PdfExportModal';
+  INITIAL_STUDY,
+} from "@/lib/storage";
+import { parseScriptureReference } from "@/lib/bible-data";
+import TopBar from "@/components/TopBar";
+import Sidebar from "@/components/Sidebar";
+import Editor from "@/components/Editor";
+import BibleReader from "@/components/BibleReader";
+import StickyNotesBar from "@/components/StickyNotesBar";
+import PdfExportModal from "@/components/PdfExportModal";
 
 export default function BibleStudyApp() {
   const [studies, setStudies] = useState<BibleStudy[]>([INITIAL_STUDY]);
@@ -28,7 +32,10 @@ export default function BibleStudyApp() {
   const [isSaving, setIsSaving] = useState(false);
   const [splitRatio, setSplitRatio] = useState(58); // 58% editor, 42% bible reader
   const [isDraggingSplitter, setIsDraggingSplitter] = useState(false);
-  const [insertTrigger, setInsertTrigger] = useState<{ content: string; timestamp: number } | null>(null);
+  const [insertTrigger, setInsertTrigger] = useState<{
+    content: string;
+    timestamp: number;
+  } | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -39,35 +46,41 @@ export default function BibleStudyApp() {
     const activeId = loadActiveStudyId();
     setStudies(loadedStudies);
     const exists = loadedStudies.some((s) => s.id === activeId);
-    setActiveStudyId(exists ? activeId : loadedStudies[0]?.id || INITIAL_STUDY.id);
+    setActiveStudyId(
+      exists ? activeId : loadedStudies[0]?.id || INITIAL_STUDY.id,
+    );
   }, []);
 
-  const activeStudy = studies.find((s) => s.id === activeStudyId) || studies[0] || INITIAL_STUDY;
+  const activeStudy =
+    studies.find((s) => s.id === activeStudyId) || studies[0] || INITIAL_STUDY;
 
   // Auto-save debounced handler
-  const handleUpdateActiveStudy = useCallback((updates: Partial<BibleStudy>) => {
-    setStudies((prev) => {
-      const idx = prev.findIndex((s) => s.id === activeStudyId);
-      if (idx === -1) return prev;
-      const updated: BibleStudy = {
-        ...prev[idx],
-        ...updates,
-        updatedAt: new Date().toISOString(),
-      };
-      const nextList = [...prev];
-      nextList[idx] = updated;
+  const handleUpdateActiveStudy = useCallback(
+    (updates: Partial<BibleStudy>) => {
+      setStudies((prev) => {
+        const idx = prev.findIndex((s) => s.id === activeStudyId);
+        if (idx === -1) return prev;
+        const updated: BibleStudy = {
+          ...prev[idx],
+          ...updates,
+          updatedAt: new Date().toISOString(),
+        };
+        const nextList = [...prev];
+        nextList[idx] = updated;
 
-      // Debounce actual save to LocalStorage
-      setIsSaving(true);
-      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
-      saveTimeoutRef.current = setTimeout(() => {
-        saveStudy(updated);
-        setIsSaving(false);
-      }, 500);
+        // Debounce actual save to LocalStorage
+        setIsSaving(true);
+        if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+        saveTimeoutRef.current = setTimeout(() => {
+          saveStudy(updated);
+          setIsSaving(false);
+        }, 500);
 
-      return nextList;
-    });
-  }, [activeStudyId]);
+        return nextList;
+      });
+    },
+    [activeStudyId],
+  );
 
   const handleSelectStudy = (id: string) => {
     setActiveStudyId(id);
@@ -75,7 +88,7 @@ export default function BibleStudyApp() {
     setIsSidebarOpen(false);
   };
 
-  const handleNewStudy = (template: 'blank' | 'soap' | 'inductive' = 'blank') => {
+  const handleNewStudy = (template: StudyTemplateType = "blank") => {
     const newStudy = createNewStudy(template);
     setStudies((prev) => [newStudy, ...prev]);
     setActiveStudyId(newStudy.id);
@@ -110,7 +123,7 @@ export default function BibleStudyApp() {
   };
 
   // Sticky Notes handlers
-  const handleAddStickyNote = (content = '', color: StickyColor = 'yellow') => {
+  const handleAddStickyNote = (content = "", color: StickyColor = "yellow") => {
     const nextNote = {
       id: `sn-${Date.now()}-${Math.random().toString(36).substring(2, 5)}`,
       content,
@@ -122,15 +135,22 @@ export default function BibleStudyApp() {
     });
   };
 
-  const handleUpdateStickyNote = (noteId: string, updates: Partial<typeof activeStudy.stickyNotes[0]>) => {
+  const handleUpdateStickyNote = (
+    noteId: string,
+    updates: Partial<(typeof activeStudy.stickyNotes)[0]>,
+  ) => {
     const updatedNotes = (activeStudy.stickyNotes || []).map((n) =>
-      n.id === noteId ? { ...n, ...updates, updatedAt: new Date().toISOString() } : n
+      n.id === noteId
+        ? { ...n, ...updates, updatedAt: new Date().toISOString() }
+        : n,
     );
     handleUpdateActiveStudy({ stickyNotes: updatedNotes });
   };
 
   const handleDeleteStickyNote = (noteId: string) => {
-    const filtered = (activeStudy.stickyNotes || []).filter((n) => n.id !== noteId);
+    const filtered = (activeStudy.stickyNotes || []).filter(
+      (n) => n.id !== noteId,
+    );
     handleUpdateActiveStudy({ stickyNotes: filtered });
   };
 
@@ -149,7 +169,7 @@ export default function BibleStudyApp() {
       handleUpdateActiveStudy({
         currentBook: parsed.book,
         currentChapter: parsed.chapter,
-        passage: `${parsed.book} ${parsed.chapter}${parsed.verse ? `:${parsed.verse}` : ''}`,
+        passage: `${parsed.book} ${parsed.chapter}${parsed.verse ? `:${parsed.verse}` : ""}`,
       });
     }
   };
@@ -176,13 +196,13 @@ export default function BibleStudyApp() {
     };
 
     if (isDraggingSplitter) {
-      window.addEventListener('mousemove', handleMouseMove);
-      window.addEventListener('mouseup', handleMouseUp);
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
     }
 
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseup', handleMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
   }, [isDraggingSplitter]);
 
@@ -202,14 +222,14 @@ export default function BibleStudyApp() {
         />
       </div>
 
-      <div className="workspace-intro no-print">
+      {/* <div className="workspace-intro no-print">
         <div><span className="eyebrow">YOUR PERSONAL STUDY SPACE</span><h1>A little time in the Word.</h1></div>
         <p>Read slowly. Reflect deeply.<br />Let the words take root.</p>
-      </div>
+      </div> */}
       {/* Main Workspace: Split Pane (Editor Left + Bible Reader Right) */}
       <main
         ref={containerRef}
-        className="workspace flex-1 flex overflow-hidden relative no-print"
+        className="workspace flex-1 flex overflow-hidden relative no-print py-4"
       >
         {/* Left Side: Rich Text Note Editor */}
         <section
@@ -241,7 +261,7 @@ export default function BibleStudyApp() {
             study={activeStudy}
             onUpdateStudy={handleUpdateActiveStudy}
             onInsertIntoNotes={handleInsertIntoNotes}
-            onAddStickyNote={(text) => handleAddStickyNote(text, 'yellow')}
+            onAddStickyNote={(text) => handleAddStickyNote(text, "yellow")}
           />
         </section>
       </main>
@@ -284,29 +304,38 @@ export default function BibleStudyApp() {
             BIBLE STUDY NOTES
           </div>
           <h1 className="text-3xl font-bold mt-1 text-black">
-            {activeStudy.title || 'Untitled Bible Study'}
+            {activeStudy.title || "Untitled Bible Study"}
           </h1>
           <div className="mt-2 flex gap-3 text-sm text-gray-700">
             <span className="font-semibold">{activeStudy.passage}</span>
             <span>•</span>
             <span suppressHydrationWarning>
-              {new Date(activeStudy.updatedAt || activeStudy.createdAt).toLocaleDateString()}
+              {new Date(
+                activeStudy.updatedAt || activeStudy.createdAt,
+              ).toLocaleDateString()}
             </span>
           </div>
         </div>
 
-        <div 
+        <div
           className="tiptap-editor-content print:text-base mb-8"
-          dangerouslySetInnerHTML={{ __html: activeStudy.contentHtml }} 
+          dangerouslySetInnerHTML={{ __html: activeStudy.contentHtml }}
         />
 
         {activeStudy.stickyNotes?.length > 0 && (
           <div className="print-reflections mt-10 pt-6 border-t-2 border-gray-200">
-            <h2 className="text-lg font-bold mb-4 text-black">Study Insights & Sticky Notes</h2>
+            <h2 className="text-lg font-bold mb-4 text-black">
+              Study Insights & Sticky Notes
+            </h2>
             <div className="grid grid-cols-2 gap-4">
               {activeStudy.stickyNotes.map((note) => (
-                <div key={note.id} className="p-3 border border-gray-300 rounded-lg bg-gray-50 text-xs">
-                  <p className="font-medium text-gray-800 whitespace-pre-wrap">{note.content}</p>
+                <div
+                  key={note.id}
+                  className="p-3 border border-gray-300 rounded-lg bg-gray-50 text-xs"
+                >
+                  <p className="font-medium text-gray-800 whitespace-pre-wrap">
+                    {note.content}
+                  </p>
                 </div>
               ))}
             </div>

@@ -34,10 +34,24 @@ export default function BibleReader({
 }: BibleReaderProps) {
   const [chapterData, setChapterData] = useState<BibleChapterData | null>(null);
   const [loading, setLoading] = useState(false);
-  const [translation, setTranslation] = useState('web');
+  const [translation, setTranslation] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('preferred_bible_translation') || 'niv';
+    }
+    return 'niv';
+  });
   const [copiedVerseIndex, setCopiedVerseIndex] = useState<number | null>(null);
   const [iframeKey, setIframeKey] = useState(0);
   const [showIframeNotice, setShowIframeNotice] = useState(true);
+
+  const handleTranslationChange = (newTranslation: string) => {
+    setTranslation(newTranslation);
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('preferred_bible_translation', newTranslation);
+      } catch {}
+    }
+  };
 
   const currentBookInfo = BIBLE_BOOKS.find((b) => b.name === study.currentBook) || BIBLE_BOOKS[44]; // Romans
 
@@ -172,7 +186,7 @@ export default function BibleReader({
               <select
                 aria-label="Translation"
                 value={translation}
-                onChange={(e) => setTranslation(e.target.value)}
+                onChange={(e) => handleTranslationChange(e.target.value)}
                 className="bg-[#ffffff] border border-[#2525251a] rounded-full px-2.5 py-1 text-[11px] font-medium text-[#6b6b6b] outline-hidden cursor-pointer"
               >
                 {BIBLE_TRANSLATIONS.map((t) => (

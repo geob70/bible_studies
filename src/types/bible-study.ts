@@ -1,5 +1,9 @@
 export type StickyColor = 'yellow' | 'mint' | 'sky' | 'lavender' | 'peach' | 'rose' | 'slate';
 
+export type PdfTheme = 'minimal' | 'parchment' | 'journal';
+
+export type StudyTemplateType = 'blank' | 'soap' | 'inductive' | 'contrast' | 'character';
+
 export interface StickyNote {
   id: string;
   content: string;

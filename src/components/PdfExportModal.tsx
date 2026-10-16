@@ -6,13 +6,12 @@ import {
   X, 
   Download, 
   Printer, 
-  Check, 
   FileText, 
   Layers, 
   Sparkles,
   Loader2
 } from 'lucide-react';
-import { BibleStudy } from '@/types/bible-study';
+import { BibleStudy, PdfTheme } from '@/types/bible-study';
 import { exportStudyToPdf } from '@/lib/pdf-export';
 
 interface PdfExportModalProps {
@@ -29,6 +28,7 @@ export default function PdfExportModal({
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
   const [includeStickyNotes, setIncludeStickyNotes] = useState(true);
+  const [selectedTheme, setSelectedTheme] = useState<PdfTheme>('minimal');
 
   if (!isOpen) return null;
 
@@ -40,7 +40,7 @@ export default function PdfExportModal({
         ...study,
         stickyNotes: includeStickyNotes ? study.stickyNotes : [],
       };
-      await exportStudyToPdf(studyToExport);
+      await exportStudyToPdf(studyToExport, selectedTheme);
       onClose();
     } catch (err) {
       console.error('PDF export failed', err);
@@ -104,6 +104,68 @@ export default function PdfExportModal({
           </p>
         </div>
 
+        {/* Template Style Selection */}
+        <div className="space-y-2 text-xs">
+          <span className="font-semibold text-[#252525] block">
+            Choose PDF Style &amp; Theme
+          </span>
+          <div className="grid grid-cols-3 gap-2">
+            <button
+              type="button"
+              onClick={() => setSelectedTheme('minimal')}
+              className={`p-2.5 rounded-[12px] border text-left transition-all cursor-pointer ${
+                selectedTheme === 'minimal'
+                  ? 'border-[#171717] bg-[#f5f5f5] shadow-xs'
+                  : 'border-[#25252514] bg-white hover:bg-[#fafafa]'
+              }`}
+            >
+              <div className="font-semibold text-[#252525] flex items-center gap-1.5 mb-1">
+                <FileText className="w-3.5 h-3.5 text-[#171717]" />
+                <span>Minimal</span>
+              </div>
+              <p className="text-[10px] text-[#6b6b6b] leading-tight">
+                Refined monochrome with balanced sizing
+              </p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSelectedTheme('parchment')}
+              className={`p-2.5 rounded-[12px] border text-left transition-all cursor-pointer ${
+                selectedTheme === 'parchment'
+                  ? 'border-[#b45309] bg-[#fefce8] shadow-xs'
+                  : 'border-[#25252514] bg-white hover:bg-[#fefce8]/50'
+              }`}
+            >
+              <div className="font-semibold text-[#78350f] flex items-center gap-1.5 mb-1">
+                <Sparkles className="w-3.5 h-3.5 text-[#b45309]" />
+                <span>Parchment</span>
+              </div>
+              <p className="text-[10px] text-[#92400e] leading-tight">
+                Warm cream paper &amp; classic serif aesthetic
+              </p>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setSelectedTheme('journal')}
+              className={`p-2.5 rounded-[12px] border text-left transition-all cursor-pointer ${
+                selectedTheme === 'journal'
+                  ? 'border-[#0284c7] bg-[#f0f9ff] shadow-xs'
+                  : 'border-[#25252514] bg-white hover:bg-[#f0f9ff]/50'
+              }`}
+            >
+              <div className="font-semibold text-[#0369a1] flex items-center gap-1.5 mb-1">
+                <Sparkles className="w-3.5 h-3.5 text-[#0284c7]" />
+                <span>Journal</span>
+              </div>
+              <p className="text-[10px] text-[#0284c7] leading-tight">
+                Modern study zine with framed callouts
+              </p>
+            </button>
+          </div>
+        </div>
+
         {/* Options */}
         <div className="space-y-3 text-xs">
           <label className="flex items-center justify-between p-3 rounded-[12px] border border-[#25252514] bg-white cursor-pointer hover:bg-[#f5f5f5] transition-colors">
@@ -114,7 +176,7 @@ export default function PdfExportModal({
                   Include Sticky Notes Section
                 </span>
                 <span className="text-[#6b6b6b]">
-                  Renders your {study.stickyNotes?.length || 0} sticky notes at the bottom of the PDF
+                  Renders your {study.stickyNotes?.length || 0} sticky notes in a styled grid
                 </span>
               </div>
             </div>

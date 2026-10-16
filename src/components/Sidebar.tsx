@@ -15,7 +15,7 @@ import {
   Calendar,
   Sparkles
 } from 'lucide-react';
-import { BibleStudy } from '@/types/bible-study';
+import { BibleStudy, StudyTemplateType } from '@/types/bible-study';
 import { exportStudiesToJson, importStudiesFromJson } from '@/lib/storage';
 
 interface SidebarProps {
@@ -24,7 +24,7 @@ interface SidebarProps {
   studies: BibleStudy[];
   activeStudyId: string;
   onSelectStudy: (id: string) => void;
-  onNewStudy: (template?: 'blank' | 'soap' | 'inductive') => void;
+  onNewStudy: (template?: StudyTemplateType) => void;
   onDeleteStudy: (id: string) => void;
   onDuplicateStudy: (study: BibleStudy) => void;
   onReloadAllStudies: () => void;
